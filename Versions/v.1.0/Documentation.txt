@@ -1,1 +1,29 @@
+Created February 10, 2024.
+
+Basic foundation of the program Insight for Sangguniang Kabataan residents of a barangay. 
+Those features are:
+
+Login page:
+  Should redirect users to Admin or Basic view depending on their clearance level.
+
+AdminView_Basic:
+  Shows the basic table with lesser details compared to advanced view
+
+AdminView_Advanced:
+  Shows more details of the table when toggled on.
+
+BasicView:
+  Is the same with admin view but without the register, update, and remove user features. View only mode.
+
+Registration:
+  Allows users to register and add their information to the table.
+
+Edit Information:
+  Allows user to update existing information.
+
+# To be updated features:
+- Better UI design
+- Integration of SQL
+- Connection of pages
+- Error handling
 
