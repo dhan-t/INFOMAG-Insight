@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="insight_pawpatrol/src"/>
+	<classpathentry kind="src" path="Versions/v.1.0/insight_pawpatrol/src"/>
+	<classpathentry kind="lib" path="insight_pawpatrol/jgoodies-forms-1.8.0.jar"/>
+	<classpathentry kind="lib" path="insight_pawpatrol/jgoodies-forms-1.8.0-sources.jar"/>
+	<classpathentry kind="lib" path="insight_pawpatrol/miglayout15-swing.jar"/>
+	<classpathentry kind="lib" path="Versions/v.1.0/insight_pawpatrol/jgoodies-forms-1.8.0.jar"/>
+	<classpathentry kind="lib" path="Versions/v.1.0/insight_pawpatrol/jgoodies-forms-1.8.0-sources.jar"/>
+	<classpathentry kind="lib" path="Versions/v.1.0/insight_pawpatrol/miglayout15-swing.jar"/>
+	<classpathentry kind="output" path="Versions/v.1.0/insight_pawpatrol/bin"/>
+</classpath>
