@@ -16,11 +16,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class LoginPage {
-
 	private JFrame frame;
 	private JTextField textField_Username;
 	private JTextField textField_Password;
-
+	
 	/**
 	 * Launch the application.
 	 */
@@ -53,14 +52,14 @@ public class LoginPage {
 		frame.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(255, 255, 255));
 		panel.setBounds(508, 0, 556, 681);
+		panel.setBackground(new Color(255, 255, 255));
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblInsightTitle = new JLabel("Insight");
-		lblInsightTitle.setBackground(new Color(0, 0, 0));
 		lblInsightTitle.setBounds(103, 85, 355, 65);
+		lblInsightTitle.setBackground(new Color(0, 0, 0));
 		panel.add(lblInsightTitle);
 		lblInsightTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblInsightTitle.setFont(new Font("Quando", Font.BOLD, 54));
@@ -96,11 +95,19 @@ public class LoginPage {
 		panelLoginPanel.add(btn_Login);
 		
 		JLabel lblSignIn = new JLabel("Sign In");
+		lblSignIn.setBounds(106, 162, 355, 65);
 		lblSignIn.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSignIn.setForeground(new Color(0, 0, 0));
 		lblSignIn.setFont(new Font("Arial", Font.ITALIC, 20));
-		lblSignIn.setBounds(106, 162, 355, 65);
 		panel.add(lblSignIn);
+		
+		JButton btnNewButton = new JButton("New button");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton.setBounds(157, 600, 89, 23);
+		panel.add(btnNewButton);
 		frame.setBackground(new Color(22, 22, 22));
 		frame.setBounds(100, 100, 1080, 720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
