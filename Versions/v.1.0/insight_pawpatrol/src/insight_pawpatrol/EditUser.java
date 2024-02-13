@@ -54,18 +54,18 @@ public class EditUser {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					EditUser window = new EditUser();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					EditUser window = new EditUser();
+//					window.frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the application.
@@ -83,6 +83,7 @@ public class EditUser {
 		frame.setResizable(false);
 		frame.getContentPane().setBackground(new Color(44, 44, 44));
 		frame.getContentPane().setLayout(null);
+		frame.setVisible(true);
 		
 		JPanel panel_sidePanel = new JPanel();
 		panel_sidePanel.setBackground(new Color(22, 22, 22));

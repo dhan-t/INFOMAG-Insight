@@ -8,17 +8,26 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class LoginPage {
 	private JFrame frame;
 	private JTextField textField_Username;
 	private JTextField textField_Password;
+	private boolean successfulConn = false;
+	private int clearanceLvl;
 	
 	/**
 	 * Launch the application.
@@ -84,6 +93,60 @@ public class LoginPage {
 		panelLoginPanel.add(textField_Password);
 		
 		JButton btn_Login = new JButton("Sign In");
+		btn_Login.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				try {
+					String username = textField_Username.getText();
+					String password = textField_Password.getText();
+					DBManager manager = new DBManager();
+					
+					String sqlFetch = "SELECT * FROM `brgy credentials` WHERE username=?";
+					
+					Connection conn = manager.connect();
+					PreparedStatement ps = conn.prepareStatement(sqlFetch);
+					ps.setString(1, username);
+					
+					ResultSet rs =  ps.executeQuery();
+					while (rs.next()) {
+						String username1 = rs.getString("Username");
+						System.out.println(username1);
+						System.out.println("hey");
+						if (username.equals(username1)) {
+							System.out.println("correct user");
+							String password1 = rs.getString("Password");
+							if (password.equals(password1)) {
+								clearanceLvl = rs.getInt("Clearance_Lvl");
+								System.out.println("Connected");
+								successfulConn = true;
+								break;
+							}
+							
+							else {
+								System.out.println("WRONGPASSWORD");
+								break;
+							}
+						}
+					}
+					if (successfulConn) {
+						if (clearanceLvl == 1) {
+							
+							manager.setUsername("root"); // implement a way to make specific perms
+							manager.setPassword("5wLCmVS9Q2Z4tvVp");
+							frame.dispose();
+							new BasicView_BasicTable(manager);
+						}
+					}
+						
+				} 
+				catch (Exception err) {
+					JOptionPane.showMessageDialog(null, err);
+				}
+				
+				
+			}
+		});
 		btn_Login.setFont(new Font("Arial", Font.PLAIN, 14));
 		btn_Login.setForeground(new Color(255, 255, 255));
 		btn_Login.setBackground(new Color(41, 139, 37));
@@ -100,14 +163,6 @@ public class LoginPage {
 		lblSignIn.setForeground(new Color(0, 0, 0));
 		lblSignIn.setFont(new Font("Arial", Font.ITALIC, 20));
 		panel.add(lblSignIn);
-		
-		JButton btnNewButton = new JButton("New button");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnNewButton.setBounds(157, 600, 89, 23);
-		panel.add(btnNewButton);
 		frame.setBackground(new Color(22, 22, 22));
 		frame.setBounds(100, 100, 1080, 720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

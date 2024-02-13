@@ -11,17 +11,26 @@ public class DBManager {
 	String username = "";
 	String password = "";
 	
+	private String clearanceUsername = "clearanceCheck";
+	private String clearancePassword = "1234";
 	
-	public DBManager (String username, String password) {
+	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public void setPassword(String password) {
 		this.password = password;
 	}
 	
+	public DBManager () {
+		this.username = this.clearanceUsername;
+		this.password = this.clearancePassword;
+	}
+
 	public Connection connect() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/iyouth", this.username, this.password);
-			System.out.println("Connected");
 			return conn;
 		}
 		catch (Exception e) {
