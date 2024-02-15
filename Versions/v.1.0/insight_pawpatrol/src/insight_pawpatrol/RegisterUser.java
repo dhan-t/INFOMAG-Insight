@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.DocumentFilter;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.MatteBorder;
@@ -51,26 +52,11 @@ public class RegisterUser {
 	private JTextField textField_Zone;
 	private JTextField textField_PhoneNumber;
 	private JTextField textField_Email;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RegisterUser window = new RegisterUser();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
+	private DBManager user;
 
-	/**
-	 * Create the application.
-	 */
-	public RegisterUser() {
+	public RegisterUser(DBManager user) {
+		this.user = user;
 		initialize();
 	}
 
@@ -80,6 +66,7 @@ public class RegisterUser {
 		frame.setResizable(false);
 		frame.getContentPane().setBackground(new Color(44, 44, 44));
 		frame.getContentPane().setLayout(null);
+		frame.setVisible(true);
 		
 		JPanel panel_sidePanel = new JPanel();
 		panel_sidePanel.setBackground(new Color(22, 22, 22));
@@ -350,6 +337,7 @@ public class RegisterUser {
 		textField_PhoneNumber = new JTextField();
 		textField_PhoneNumber.setColumns(10);
 		textField_PhoneNumber.setBounds(0, 15, 280, 35);
+		
 		panel_PhoneNumber.add(textField_PhoneNumber);
 		
 		JLabel lbl_PhoneNumber = new JLabel("Phone Number");

@@ -42,7 +42,6 @@ public class AdminView_BasicTable_page {
 	private JTable adTable;
 	private DBManager user;
 	private int rows = 0;
-	
 	private boolean bscORadv = true;
 
 	public AdminView_BasicTable_page(DBManager user) {
@@ -80,28 +79,6 @@ public class AdminView_BasicTable_page {
 		lbl_SkRecords.setFont(new Font("Quando", Font.PLAIN, 14));
 		lbl_SkRecords.setBounds(-1, 34, 130, 34);
 		panel_sidePanel.add(lbl_SkRecords);
-		
-		JButton btn_RegisterUser = new JButton("Register");
-		btn_RegisterUser.setForeground(new Color(255, 255, 255));
-		btn_RegisterUser.setFont(new Font("Arial", Font.BOLD, 14));
-		btn_RegisterUser.setBackground(new Color(41, 139, 37));
-		btn_RegisterUser.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btn_RegisterUser.setBounds(10, 92, 110, 42);
-		panel_sidePanel.add(btn_RegisterUser);
-		
-		JButton btn_DeleteInfo = new JButton("Remove");
-		btn_DeleteInfo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btn_DeleteInfo.setForeground(new Color(255, 255, 255));
-		btn_DeleteInfo.setFont(new Font("Arial", Font.BOLD, 14));
-		btn_DeleteInfo.setBackground(new Color(219, 43, 57));
-		btn_DeleteInfo.setBounds(11, 200, 110, 42);
-		panel_sidePanel.add(btn_DeleteInfo);
 		
 		JPanel panel_TopLeft = new JPanel();
 		panel_TopLeft.setBackground(new Color(255, 195, 0));
@@ -388,8 +365,7 @@ public class AdminView_BasicTable_page {
 			public void actionPerformed(ActionEvent e) {
 				if (bscORadv) {
 					int indexToChange = table.getSelectedRow();
-					
-					Object checker = table.getValueAt(0, 0);
+					Object checker = table.getValueAt(indexToChange, 0);
 					
 					if (indexToChange < 0) {
 						JOptionPane.showMessageDialog(btn_UpdateInfo, "Please select row to edit");
@@ -404,8 +380,13 @@ public class AdminView_BasicTable_page {
 				}
 				else {
 					int indexToChange = adTable.getSelectedRow();
+					Object checker = adTable.getValueAt(indexToChange, 0);
+					
 					if (indexToChange < 0) {
 						JOptionPane.showMessageDialog(btn_UpdateInfo, "Please select row to edit");
+					}
+					else if (checker == null){
+						JOptionPane.showMessageDialog(btn_UpdateInfo, "Please select a valid row to edit");
 					}
 					else {
 						frame.dispose();
@@ -419,6 +400,84 @@ public class AdminView_BasicTable_page {
 		btn_UpdateInfo.setBackground(new Color(56, 56, 56));
 		btn_UpdateInfo.setBounds(12, 145, 110, 42);
 		panel_sidePanel.add(btn_UpdateInfo);
+		
+		JButton btn_DeleteInfo = new JButton("Remove");
+		btn_DeleteInfo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DefaultTableModel tblModel = (DefaultTableModel)table.getModel();
+				DefaultTableModel adTblModel = (DefaultTableModel)adTable.getModel();
+				if (bscORadv) {
+					int indexToChange = table.getSelectedRow();
+					Object checker = table.getValueAt(indexToChange, 0);
+					
+					if (indexToChange < 0) {
+						JOptionPane.showMessageDialog(btn_UpdateInfo, "Please select row to delete");
+					}
+					else if (checker == null){
+						JOptionPane.showMessageDialog(btn_UpdateInfo, "Please select a valid row to delete");
+					}
+					else {
+						try {
+							String sqlDelete = "DELETE FROM `resident` WHERE Res_ID=?";
+							Connection conn = user.connect();
+							PreparedStatement ps = conn.prepareStatement(sqlDelete);
+							ps.setString(1, checker.toString());
+							
+							ps.execute();
+							tblModel.removeRow(indexToChange);
+							adTblModel.removeRow(indexToChange);
+						}
+						catch (Exception err) {
+							JOptionPane.showMessageDialog(btn_DeleteInfo, err);
+						}
+					}
+				}
+				else {
+					int indexToChange = adTable.getSelectedRow();
+					Object checker = adTable.getValueAt(indexToChange, 0);
+					
+					if (indexToChange < 0) {
+						JOptionPane.showMessageDialog(btn_UpdateInfo, "Please select row to delete");
+					}
+					else if (checker == null){
+						JOptionPane.showMessageDialog(btn_UpdateInfo, "Please select a valid row to delete");
+					}
+					else {
+						try {
+							String sqlDelete = "DELETE FROM `resident` WHERE Res_ID=?";
+							Connection conn = user.connect();
+							PreparedStatement ps = conn.prepareStatement(sqlDelete);
+							ps.setString(1, checker.toString());
+							
+							ps.execute();
+							tblModel.removeRow(indexToChange);
+							adTblModel.removeRow(indexToChange);
+						}
+						catch (Exception err) {
+							JOptionPane.showMessageDialog(btn_DeleteInfo, err);
+						}
+					}
+				}
+			}
+		});
+		btn_DeleteInfo.setForeground(new Color(255, 255, 255));
+		btn_DeleteInfo.setFont(new Font("Arial", Font.BOLD, 14));
+		btn_DeleteInfo.setBackground(new Color(219, 43, 57));
+		btn_DeleteInfo.setBounds(11, 200, 110, 42);
+		panel_sidePanel.add(btn_DeleteInfo);
+		
+		JButton btn_RegisterUser = new JButton("Register");
+		btn_RegisterUser.setForeground(new Color(255, 255, 255));
+		btn_RegisterUser.setFont(new Font("Arial", Font.BOLD, 14));
+		btn_RegisterUser.setBackground(new Color(41, 139, 37));
+		btn_RegisterUser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				new RegisterUser(user);
+			}
+		});
+		btn_RegisterUser.setBounds(10, 92, 110, 42);
+		panel_sidePanel.add(btn_RegisterUser);
 		
 		frame.setBounds(100, 100, 1080, 720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
