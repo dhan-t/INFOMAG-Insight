@@ -6,10 +6,17 @@ import javax.swing.JFrame;
 import java.awt.Color;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.awt.event.ActionEvent;
 import javax.swing.SpringLayout;
 import java.awt.GridBagLayout;
@@ -32,28 +39,14 @@ public class AdminView_BasicTable_page {
 	private JFrame frame;
 	private JTextField textField_Searchbar;
 	private JTable table;
-
+	private JTable adTable;
+	private DBManager user;
+	private int rows = 0;
+	
 	private boolean bscORadv = true;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AdminView_BasicTable_page window = new AdminView_BasicTable_page();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
-	/**
-	 * Create the application.
-	 */
-	public AdminView_BasicTable_page() {
+	public AdminView_BasicTable_page(DBManager user) {
+		this.user = user;
 		initialize();
 	}
 
@@ -66,6 +59,7 @@ public class AdminView_BasicTable_page {
 		frame.setResizable(false);
 		frame.getContentPane().setBackground(new Color(44, 44, 44));
 		frame.getContentPane().setLayout(null);
+		frame.setVisible(true);
 		
 		JPanel panel_sidePanel = new JPanel();
 		panel_sidePanel.setBackground(new Color(22, 22, 22));
@@ -97,17 +91,6 @@ public class AdminView_BasicTable_page {
 		});
 		btn_RegisterUser.setBounds(10, 92, 110, 42);
 		panel_sidePanel.add(btn_RegisterUser);
-		
-		JButton btn_UpdateInfo = new JButton("Update");
-		btn_UpdateInfo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btn_UpdateInfo.setForeground(new Color(255, 255, 255));
-		btn_UpdateInfo.setFont(new Font("Arial", Font.BOLD, 14));
-		btn_UpdateInfo.setBackground(new Color(56, 56, 56));
-		btn_UpdateInfo.setBounds(12, 145, 110, 42);
-		panel_sidePanel.add(btn_UpdateInfo);
 		
 		JButton btn_DeleteInfo = new JButton("Remove");
 		btn_DeleteInfo.addActionListener(new ActionListener() {
@@ -152,34 +135,6 @@ public class AdminView_BasicTable_page {
 		textField_Searchbar.setBounds(10, 38, 155, 25);
 		panel_TopRight.add(textField_Searchbar);
 		textField_Searchbar.setColumns(10);
-		
-		JButton btn_Search = new JButton("Search");
-		btn_Search.setBackground(new Color(255, 255, 255));
-		btn_Search.setFont(new Font("Arial", Font.PLAIN, 11));
-		btn_Search.setBounds(161, 38, 76, 25);
-		panel_TopRight.add(btn_Search);
-		
-		JToggleButton tglbtn_Advanced = new JToggleButton("Advanced");
-		tglbtn_Advanced.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				bscORadv = false;
-			}
-		});
-		tglbtn_Advanced.setFont(new Font("Arial", Font.PLAIN, 11));
-		tglbtn_Advanced.setBackground(new Color(255, 255, 255));
-		tglbtn_Advanced.setBounds(345, 38, 100, 25);
-		panel_TopRight.add(tglbtn_Advanced);
-		
-		JToggleButton tglbtn_BasicView = new JToggleButton("Basic View");
-		tglbtn_BasicView.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				bscORadv = true;
-			}
-		});
-		tglbtn_BasicView.setFont(new Font("Arial", Font.PLAIN, 11));
-		tglbtn_BasicView.setBackground(new Color(255, 255, 255));
-		tglbtn_BasicView.setBounds(247, 38, 100, 25);
-		panel_TopRight.add(tglbtn_BasicView);
 		
 		JScrollPane scrollPane_BasicView = new JScrollPane();
 		scrollPane_BasicView.setBounds(137, 92, 917, 675);
@@ -265,6 +220,206 @@ public class AdminView_BasicTable_page {
 		table.getColumnModel().getColumn(6).setPreferredWidth(90);
 		table.getColumnModel().getColumn(7).setResizable(false);
 		table.getColumnModel().getColumn(7).setPreferredWidth(150);
+		
+		adTable = new JTable();
+		adTable.setBorder(null);
+		adTable.setSurrendersFocusOnKeystroke(true);
+		adTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		adTable.setFont(new Font("Tall Dark And Handsome", Font.PLAIN, 17));
+		adTable.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null, null},
+			},
+			new String[] {
+				"ID", "Full Name", "Birthdate", "Youth Class", "Employed", "SK Voter", "National Voter", "Address"
+			}
+		) {
+			Class[] columnTypes = new Class[] {
+				Object.class, Object.class, Object.class, Object.class, Object.class, Object.class, String.class, Object.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
+		adTable.getColumnModel().getColumn(0).setPreferredWidth(85);
+		adTable.getColumnModel().getColumn(1).setPreferredWidth(120);
+		adTable.getColumnModel().getColumn(2).setPreferredWidth(120);
+		adTable.getColumnModel().getColumn(3).setPreferredWidth(80);
+		adTable.getColumnModel().getColumn(4).setPreferredWidth(60);
+		adTable.getColumnModel().getColumn(5).setPreferredWidth(60);
+		adTable.getColumnModel().getColumn(6).setPreferredWidth(80);
+		adTable.getColumnModel().getColumn(7).setResizable(false);
+		adTable.getColumnModel().getColumn(7).setPreferredWidth(150);
+		
+		JToggleButton tglbtn_Advanced = new JToggleButton("Advanced");
+		tglbtn_Advanced.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (bscORadv) {
+					scrollPane_TableScroll.setViewportView(adTable);
+					bscORadv = false;
+				}				
+			}
+		});
+		tglbtn_Advanced.setFont(new Font("Arial", Font.PLAIN, 11));
+		tglbtn_Advanced.setBackground(new Color(255, 255, 255));
+		tglbtn_Advanced.setBounds(345, 38, 100, 25);
+		panel_TopRight.add(tglbtn_Advanced);
+
+		JToggleButton tglbtn_BasicView = new JToggleButton("Basic View");
+		tglbtn_BasicView.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!bscORadv) {
+					scrollPane_TableScroll.setViewportView(table);
+					bscORadv = true;
+				}
+			}
+		});
+		tglbtn_BasicView.setFont(new Font("Arial", Font.PLAIN, 11));
+		tglbtn_BasicView.setBackground(new Color(255, 255, 255));
+		tglbtn_BasicView.setBounds(247, 38, 100, 25);
+		panel_TopRight.add(tglbtn_BasicView);
+		
+		JButton btn_Search = new JButton("Search");
+		btn_Search.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					String searchText = textField_Searchbar.getText();
+					String sqlFetch = "SELECT * FROM `resident` INNER JOIN address ON resident.Address_ID=address.Address_ID INNER JOIN demographic ON resident.Demo_ID=demographic.Demo_ID WHERE First_Name=? OR Last_Name=?";
+					
+					Connection conn = user.connect();
+					PreparedStatement ps = conn.prepareStatement(sqlFetch);
+					ps.setString(1, searchText);
+					ps.setString(2, searchText);
+		
+					ResultSet rs =  ps.executeQuery();
+					int rowCounter = 0;
+					DefaultTableModel tblModel = (DefaultTableModel)table.getModel();
+					DefaultTableModel adTblModel = (DefaultTableModel)adTable.getModel();
+					for (int i = 0; i <= rows; i++) {
+						tblModel.removeRow(i);
+						adTblModel.removeRow(i);
+					}
+					while (rs.next()) {
+						String iD = rs.getString("Res_ID");
+						String surname = rs.getString("Last_Name");
+						String firstName = rs.getString("First_Name");
+						String initial = rs.getString("Mid_Initial");
+						String suffix = rs.getString("Suffix");
+						if (suffix == null) suffix = "";
+						String sex = rs.getString("Sex");
+						String number = rs.getString("Contact_Num");
+						String address = rs.getString("Region") + " " + rs.getString("City/Municipality") + " " + rs.getString("Barangay");
+						
+						String birthDate = rs.getString("Birthdate");
+						String youthClass = rs.getString("Youth_Class");
+						String employed = rs.getString("Work_stat");
+						String skVoter = rs.getString("Reg_SKVoter");
+						String natVoter = rs.getString("Reg_NatVoter");
+						
+
+						String tblData[] = {iD, surname, firstName, initial, suffix, sex, number, address};
+						String adtblData[] = {iD, surname + ", " + firstName + " " + initial + " " + suffix, birthDate, youthClass, employed, skVoter, natVoter, address};
+						System.out.println(rowCounter);
+
+						tblModel.insertRow(rowCounter, tblData);
+						adTblModel.insertRow(rowCounter, adtblData);
+						rowCounter++;
+					}
+					rows = rowCounter;
+				}
+				catch (Exception err) {
+					JOptionPane.showMessageDialog(btn_Search, err);
+				}
+				
+			}
+		});
+		btn_Search.setBackground(new Color(255, 255, 255));
+		btn_Search.setFont(new Font("Arial", Font.PLAIN, 11));
+		btn_Search.setBounds(161, 38, 76, 25);
+		panel_TopRight.add(btn_Search);
+		
+		JButton btn_UpdateInfo = new JButton("Update");
+		btn_UpdateInfo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (bscORadv) {
+					int indexToChange = table.getSelectedRow();
+					
+					Object checker = table.getValueAt(0, 0);
+					
+					if (indexToChange < 0) {
+						JOptionPane.showMessageDialog(btn_UpdateInfo, "Please select row to edit");
+					}
+					else if (checker == null){
+						JOptionPane.showMessageDialog(btn_UpdateInfo, "Please select a valid row to edit");
+					}
+					else {
+						frame.dispose();
+						new EditUser();
+					}
+				}
+				else {
+					int indexToChange = adTable.getSelectedRow();
+					if (indexToChange < 0) {
+						JOptionPane.showMessageDialog(btn_UpdateInfo, "Please select row to edit");
+					}
+					else {
+						frame.dispose();
+						new EditUser();
+					}
+				}
+			}
+		});
+		btn_UpdateInfo.setForeground(new Color(255, 255, 255));
+		btn_UpdateInfo.setFont(new Font("Arial", Font.BOLD, 14));
+		btn_UpdateInfo.setBackground(new Color(56, 56, 56));
+		btn_UpdateInfo.setBounds(12, 145, 110, 42);
+		panel_sidePanel.add(btn_UpdateInfo);
+		
 		frame.setBounds(100, 100, 1080, 720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}

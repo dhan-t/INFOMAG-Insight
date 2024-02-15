@@ -21,7 +21,7 @@ import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
+//NOTE!!! ctrl f REWORK para malaman kung ano mga dapat baguhin
 public class LoginPage {
 	private JFrame frame;
 	private JTextField textField_Username;
@@ -132,10 +132,17 @@ public class LoginPage {
 					if (successfulConn) {
 						if (clearanceLvl == 1) {
 							
-							manager.setUsername("root"); // implement a way to make specific perms
+							manager.setUsername("root"); // REWORK!!! implement a way to make specific perms
 							manager.setPassword("5wLCmVS9Q2Z4tvVp");
 							frame.dispose();
 							new BasicView_BasicTable(manager);
+						}
+						if (clearanceLvl == 2) {
+							
+							manager.setUsername("root"); // REWORK!!! implement a way to make specific perms
+							manager.setPassword("5wLCmVS9Q2Z4tvVp");
+							frame.dispose();
+							new AdminView_BasicTable_page(manager);
 						}
 					}
 						
