@@ -39,9 +39,10 @@ public class BasicView_BasicTable {
 	private JFrame frame;
 	private JTextField textField_Searchbar;
 	private JTable table;
-	private JTable table1;
+	private JTable adTable;
 	private DBManager user;
-
+	private int rows = 0;
+	
 	private boolean bscORadv = true;
 
 	public BasicView_BasicTable(DBManager user) {
@@ -208,12 +209,12 @@ public class BasicView_BasicTable {
 		table.getColumnModel().getColumn(7).setResizable(false);
 		table.getColumnModel().getColumn(7).setPreferredWidth(150);
 		
-		table1 = new JTable();
-		table1.setBorder(null);
-		table1.setSurrendersFocusOnKeystroke(true);
-		table1.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		table1.setFont(new Font("Tall Dark And Handsome", Font.PLAIN, 17));
-		table1.setModel(new DefaultTableModel(
+		adTable = new JTable();
+		adTable.setBorder(null);
+		adTable.setSurrendersFocusOnKeystroke(true);
+		adTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		adTable.setFont(new Font("Tall Dark And Handsome", Font.PLAIN, 17));
+		adTable.setModel(new DefaultTableModel(
 			new Object[][] {
 				{null, null, null, null, null, null, null, null},
 				{null, null, null, null, null, null, null, null},
@@ -272,22 +273,22 @@ public class BasicView_BasicTable {
 				return columnTypes[columnIndex];
 			}
 		});
-		table1.getColumnModel().getColumn(0).setPreferredWidth(85);
-		table1.getColumnModel().getColumn(1).setPreferredWidth(120);
-		table1.getColumnModel().getColumn(2).setPreferredWidth(120);
-		table1.getColumnModel().getColumn(3).setPreferredWidth(80);
-		table1.getColumnModel().getColumn(4).setPreferredWidth(60);
-		table1.getColumnModel().getColumn(5).setPreferredWidth(60);
-		table1.getColumnModel().getColumn(6).setPreferredWidth(80);
-		table1.getColumnModel().getColumn(7).setResizable(false);
-		table1.getColumnModel().getColumn(7).setPreferredWidth(150);
+		adTable.getColumnModel().getColumn(0).setPreferredWidth(85);
+		adTable.getColumnModel().getColumn(1).setPreferredWidth(120);
+		adTable.getColumnModel().getColumn(2).setPreferredWidth(120);
+		adTable.getColumnModel().getColumn(3).setPreferredWidth(80);
+		adTable.getColumnModel().getColumn(4).setPreferredWidth(60);
+		adTable.getColumnModel().getColumn(5).setPreferredWidth(60);
+		adTable.getColumnModel().getColumn(6).setPreferredWidth(80);
+		adTable.getColumnModel().getColumn(7).setResizable(false);
+		adTable.getColumnModel().getColumn(7).setPreferredWidth(150);
 		
 		
 		JToggleButton tglbtn_Advanced = new JToggleButton("Advanced");
 		tglbtn_Advanced.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (bscORadv) {
-					scrollPane_TableScroll.setViewportView(table1);
+					scrollPane_TableScroll.setViewportView(adTable);
 					bscORadv = false;
 				}				
 			}
@@ -317,8 +318,7 @@ public class BasicView_BasicTable {
 			public void mouseClicked(MouseEvent e) {
 				try {
 					String searchText = textField_Searchbar.getText();
-					
-					String sqlFetch = "SELECT * FROM `resident` INNER JOIN address ON resident.Address_ID=address.Address_ID WHERE First_Name=? OR Last_Name=?";
+					String sqlFetch = "SELECT * FROM `resident` INNER JOIN address ON resident.Address_ID=address.Address_ID INNER JOIN demographic ON resident.Demo_ID=demographic.Demo_ID WHERE First_Name=? OR Last_Name=?";
 					
 					Connection conn = user.connect();
 					PreparedStatement ps = conn.prepareStatement(sqlFetch);
@@ -327,32 +327,39 @@ public class BasicView_BasicTable {
 		
 					ResultSet rs =  ps.executeQuery();
 					int rowCounter = 0;
-					// REWORK!!! Scrap this idea, what i should do instead is regardless sa value ng bscORadv, ilagay parin sa both tables, para
-					// pag mag switch ng view from basic to advanced, nakalagay na agad yung values, to make it seamless.
-					if (bscORadv) {
-						while (rs.next()) {
-							String iD = rs.getString("Res_ID");
-							String surname = rs.getString("Last_Name");
-							String firstName = rs.getString("First_Name");
-							String initial = rs.getString("Mid_Initial");
-							String suffix = rs.getString("Suffix");
-							String sex = rs.getString("Sex");
-							String number = rs.getString("Contact_Num");
-							String address = rs.getString("Region") + " " + rs.getString("City/Municipality") + " " + rs.getString("Barangay");
-							
-							String tblData[] = {iD, surname, firstName, initial, suffix, sex, number, address};
-							System.out.println("LALALALALA");
-							System.out.println(surname);
-							DefaultTableModel tblModel = (DefaultTableModel)table.getModel();
-							tblModel.insertRow(rowCounter, tblData);
-							rowCounter++;
-						}
+					DefaultTableModel tblModel = (DefaultTableModel)table.getModel();
+					DefaultTableModel adTblModel = (DefaultTableModel)adTable.getModel();
+					for (int i = 0; i <= rows; i++) {
+						tblModel.removeRow(i);
+						adTblModel.removeRow(i);
 					}
-					else {
-						while (rs.next()) {
-							
-						}
+					while (rs.next()) {
+						String iD = rs.getString("Res_ID");
+						String surname = rs.getString("Last_Name");
+						String firstName = rs.getString("First_Name");
+						String initial = rs.getString("Mid_Initial");
+						String suffix = rs.getString("Suffix");
+						if (suffix == null) suffix = "";
+						String sex = rs.getString("Sex");
+						String number = rs.getString("Contact_Num");
+						String address = rs.getString("Region") + " " + rs.getString("City/Municipality") + " " + rs.getString("Barangay");
+						
+						String birthDate = rs.getString("Birthdate");
+						String youthClass = rs.getString("Youth_Class");
+						String employed = rs.getString("Work_stat");
+						String skVoter = rs.getString("Reg_SKVoter");
+						String natVoter = rs.getString("Reg_NatVoter");
+						
+
+						String tblData[] = {iD, surname, firstName, initial, suffix, sex, number, address};
+						String adtblData[] = {iD, surname + ", " + firstName + " " + initial + " " + suffix, birthDate, youthClass, employed, skVoter, natVoter, address};
+						System.out.println(rowCounter);
+
+						tblModel.insertRow(rowCounter, tblData);
+						adTblModel.insertRow(rowCounter, adtblData);
+						rowCounter++;
 					}
+					rows = rowCounter;
 				}
 				catch (Exception err) {
 					JOptionPane.showMessageDialog(btn_Search, err);
