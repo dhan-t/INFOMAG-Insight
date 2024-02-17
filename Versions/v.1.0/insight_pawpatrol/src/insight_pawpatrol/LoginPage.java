@@ -102,7 +102,7 @@ public class LoginPage {
 					String password = textField_Password.getText();
 					DBManager manager = new DBManager();
 					
-					String sqlFetch = "SELECT * FROM `brgy credentials` WHERE username=?";
+					String sqlFetch = "SELECT * FROM `brgy. credentials` WHERE username=?";
 					
 					Connection conn = manager.connect();
 					PreparedStatement ps = conn.prepareStatement(sqlFetch);

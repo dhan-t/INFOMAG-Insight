@@ -6,10 +6,17 @@ import javax.swing.JFrame;
 import java.awt.Color;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.SpringLayout;
 import java.awt.GridBagLayout;
@@ -22,39 +29,44 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
+import javax.swing.text.PlainDocument;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.MatteBorder;
+import javax.print.attribute.AttributeSet;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JRadioButton;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterUser {
-
 	private JFrame frame;
 
-	private boolean bscORadv = true;
-	private JTextField textField_Surname;
-	private JTextField textField_Firstname;
-	private JTextField textField_Middlename;
-	private JTextField textField_Suffix;
-	private JTextField textField_Day;
-	private JTextField textField_Month;
-	private JTextField textField_Year;
-	private JTextField textField_HouseNum;
-	private JTextField textField_Barangay;
-	private JTextField textField_CityMunici;
-	private JTextField textField_Region;
-	private JTextField textField_Province;
-	private JTextField textField_District;
-	private JTextField textField_Zone;
-	private JTextField textField_PhoneNumber;
-	private JTextField textField_Email;
+	private newTextField textField_Surname;
+	private newTextField textField_Firstname;
+	private newTextField textField_Middlename;
+	private newTextField textField_Suffix;
+	private newTextField textField_Day;
+	private newTextField textField_Month;
+	private newTextField textField_Year;
+	private newTextField textField_HouseNum;
+	private newTextField textField_Barangay;
+	private newTextField textField_CityMunici;
+	private newTextField textField_Region;
+	private newTextField textField_Province;
+	private newTextField textField_District;
+	private newTextField textField_Zone;
+	private newTextField textField_PhoneNumber;
+	private newTextField textField_Email;
 	
 	private DBManager user;
-
+	
 	public RegisterUser(DBManager user) {
 		this.user = user;
 		initialize();
@@ -110,6 +122,7 @@ public class RegisterUser {
 		panel_PhotoPlaceholder.setBounds(10, 53, 135, 135);
 		panel_BasicDetailsTablet.add(panel_PhotoPlaceholder);
 		
+		// REWORK!!! add a image thingy majigy
 		JButton btn_UploadPhoto = new JButton("Upload Photo");
 		btn_UploadPhoto.setFont(new Font("Arial", Font.PLAIN, 13));
 		btn_UploadPhoto.setBackground(new Color(255, 195, 0));
@@ -122,11 +135,11 @@ public class RegisterUser {
 		panel_BasicDetailsTablet.add(panel_Surname);
 		panel_Surname.setLayout(null);
 		
-		textField_Surname = new JTextField();
+		textField_Surname = new newTextField("Surname");
 		textField_Surname.setBounds(0, 15, 280, 35);
 		panel_Surname.add(textField_Surname);
 		textField_Surname.setColumns(10);
-		
+			
 		JLabel lbl_Surname = new JLabel("Surname");
 		lbl_Surname.setFont(new Font("Arial", Font.PLAIN, 13));
 		lbl_Surname.setBounds(0, 0, 61, 14);
@@ -138,7 +151,7 @@ public class RegisterUser {
 		panel_Firstname.setBounds(10, 270, 290, 50);
 		panel_BasicDetailsTablet.add(panel_Firstname);
 		
-		textField_Firstname = new JTextField();
+		textField_Firstname = new newTextField("First Name");
 		textField_Firstname.setColumns(10);
 		textField_Firstname.setBounds(0, 15, 280, 35);
 		panel_Firstname.add(textField_Firstname);
@@ -154,7 +167,7 @@ public class RegisterUser {
 		panel_MiddlenameAndSuffix.setBounds(10, 331, 290, 50);
 		panel_BasicDetailsTablet.add(panel_MiddlenameAndSuffix);
 		
-		textField_Middlename = new JTextField();
+		textField_Middlename = new newTextField("Middle Name");
 		textField_Middlename.setColumns(10);
 		textField_Middlename.setBounds(0, 15, 199, 35);
 		panel_MiddlenameAndSuffix.add(textField_Middlename);
@@ -164,7 +177,7 @@ public class RegisterUser {
 		lbl_Middlename.setBounds(0, 0, 199, 14);
 		panel_MiddlenameAndSuffix.add(lbl_Middlename);
 		
-		textField_Suffix = new JTextField();
+		textField_Suffix = new newTextField("Suffix");
 		textField_Suffix.setColumns(10);
 		textField_Suffix.setBounds(208, 15, 68, 35);
 		panel_MiddlenameAndSuffix.add(textField_Suffix);
@@ -180,25 +193,31 @@ public class RegisterUser {
 		panel_Birthdate.setBounds(10, 392, 290, 50);
 		panel_BasicDetailsTablet.add(panel_Birthdate);
 		
-		textField_Day = new JTextField();
+		textField_Day = new newTextField("Day");
 		textField_Day.setColumns(10);
 		textField_Day.setBounds(0, 15, 50, 35);
 		panel_Birthdate.add(textField_Day);
+		PlainDocument docDay = (PlainDocument) textField_Day.getDocument();
+		docDay.setDocumentFilter(new MyIntFilter());
 		
 		JLabel lbl_Birthdate = new JLabel("Birthdate (DD-MM-YYYY)");
 		lbl_Birthdate.setFont(new Font("Arial", Font.PLAIN, 13));
 		lbl_Birthdate.setBounds(0, 0, 230, 14);
 		panel_Birthdate.add(lbl_Birthdate);
 		
-		textField_Month = new JTextField();
+		textField_Month = new newTextField("Month");
 		textField_Month.setColumns(10);
 		textField_Month.setBounds(60, 15, 50, 35);
 		panel_Birthdate.add(textField_Month);
+		PlainDocument docMonth = (PlainDocument) textField_Month.getDocument();
+		docMonth.setDocumentFilter(new MyIntFilter());
 		
-		textField_Year = new JTextField();
+		textField_Year = new newTextField("Year");
 		textField_Year.setColumns(10);
 		textField_Year.setBounds(120, 15, 86, 35);
 		panel_Birthdate.add(textField_Year);
+		PlainDocument docYear = (PlainDocument) textField_Year.getDocument();
+		docYear.setDocumentFilter(new MyIntFilter());
 		
 		JPanel panel_Sex = new JPanel();
 		panel_Sex.setLayout(null);
@@ -235,17 +254,19 @@ public class RegisterUser {
 		panel_HouseNumANDBarangay.setBounds(10, 50, 280, 50);
 		panel_AddressContactTablet.add(panel_HouseNumANDBarangay);
 		
-		textField_HouseNum = new JTextField();
+		textField_HouseNum = new newTextField("House Number");
 		textField_HouseNum.setColumns(10);
 		textField_HouseNum.setBounds(0, 15, 135, 35);
 		panel_HouseNumANDBarangay.add(textField_HouseNum);
+		PlainDocument docHouseNum = (PlainDocument) textField_HouseNum.getDocument();
+		docHouseNum.setDocumentFilter(new MyIntFilter());
 		
 		JLabel lbl_HouseNum = new JLabel("House Number");
 		lbl_HouseNum.setFont(new Font("Arial", Font.PLAIN, 13));
 		lbl_HouseNum.setBounds(0, 0, 120, 14);
 		panel_HouseNumANDBarangay.add(lbl_HouseNum);
 		
-		textField_Barangay = new JTextField();
+		textField_Barangay = new newTextField("Barangay");
 		textField_Barangay.setColumns(10);
 		textField_Barangay.setBounds(145, 15, 135, 35);
 		panel_HouseNumANDBarangay.add(textField_Barangay);
@@ -261,7 +282,7 @@ public class RegisterUser {
 		panel_CityANDRegion.setBounds(10, 111, 280, 50);
 		panel_AddressContactTablet.add(panel_CityANDRegion);
 		
-		textField_CityMunici = new JTextField();
+		textField_CityMunici = new newTextField("Municipality");
 		textField_CityMunici.setColumns(10);
 		textField_CityMunici.setBounds(0, 15, 135, 35);
 		panel_CityANDRegion.add(textField_CityMunici);
@@ -271,7 +292,7 @@ public class RegisterUser {
 		lbl_CityMunici.setBounds(0, 0, 135, 14);
 		panel_CityANDRegion.add(lbl_CityMunici);
 		
-		textField_Region = new JTextField();
+		textField_Region = new newTextField("Region");
 		textField_Region.setColumns(10);
 		textField_Region.setBounds(145, 15, 135, 35);
 		panel_CityANDRegion.add(textField_Region);
@@ -287,7 +308,7 @@ public class RegisterUser {
 		panel_ProvinceANDDistrict.setBounds(10, 172, 280, 50);
 		panel_AddressContactTablet.add(panel_ProvinceANDDistrict);
 		
-		textField_Province = new JTextField();
+		textField_Province = new newTextField("Province");
 		textField_Province.setColumns(10);
 		textField_Province.setBounds(0, 15, 135, 35);
 		panel_ProvinceANDDistrict.add(textField_Province);
@@ -297,7 +318,7 @@ public class RegisterUser {
 		lbl_Province.setBounds(0, 0, 135, 14);
 		panel_ProvinceANDDistrict.add(lbl_Province);
 		
-		textField_District = new JTextField();
+		textField_District = new newTextField("District");
 		textField_District.setColumns(10);
 		textField_District.setBounds(145, 15, 135, 35);
 		panel_ProvinceANDDistrict.add(textField_District);
@@ -313,12 +334,12 @@ public class RegisterUser {
 		panel_Zone.setBounds(10, 233, 280, 50);
 		panel_AddressContactTablet.add(panel_Zone);
 		
-		textField_Zone = new JTextField();
+		textField_Zone = new newTextField("Zone");
 		textField_Zone.setColumns(10);
 		textField_Zone.setBounds(0, 15, 135, 35);
 		panel_Zone.add(textField_Zone);
 		
-		JLabel lbl_Zone = new JLabel("Province");
+		JLabel lbl_Zone = new JLabel("Zone");
 		lbl_Zone.setFont(new Font("Arial", Font.PLAIN, 13));
 		lbl_Zone.setBounds(0, 0, 135, 14);
 		panel_Zone.add(lbl_Zone);
@@ -334,9 +355,12 @@ public class RegisterUser {
 		panel_PhoneNumber.setBounds(10, 332, 280, 50);
 		panel_AddressContactTablet.add(panel_PhoneNumber);
 		
-		textField_PhoneNumber = new JTextField();
+		// REWORK!!! add a limit sa amount ng number + dapat 09 lagi simula
+		textField_PhoneNumber = new newTextField("Phone Number");
 		textField_PhoneNumber.setColumns(10);
 		textField_PhoneNumber.setBounds(0, 15, 280, 35);
+		PlainDocument docPhoneNum = (PlainDocument) textField_PhoneNumber.getDocument();
+		docPhoneNum.setDocumentFilter(new MyIntFilter());
 		
 		panel_PhoneNumber.add(textField_PhoneNumber);
 		
@@ -351,7 +375,7 @@ public class RegisterUser {
 		panel_Email.setBounds(10, 393, 280, 50);
 		panel_AddressContactTablet.add(panel_Email);
 		
-		textField_Email = new JTextField();
+		textField_Email = new newTextField("Email");
 		textField_Email.setColumns(10);
 		textField_Email.setBounds(0, 15, 280, 35);
 		panel_Email.add(textField_Email);
@@ -467,6 +491,10 @@ public class RegisterUser {
 		rdbtn_SK_No.setBounds(81, 15, 80, 35);
 		panel_SkVoter.add(rdbtn_SK_No);
 		
+		ButtonGroup skGroup = new ButtonGroup();
+		skGroup.add(rdbtn_SK_Yes);
+		skGroup.add(rdbtn_SK_No);
+		
 		JPanel panel_NatVoter = new JPanel();
 		panel_NatVoter.setLayout(null);
 		panel_NatVoter.setBackground(Color.WHITE);
@@ -490,7 +518,173 @@ public class RegisterUser {
 		rdbtn_NatVoter_No.setBounds(81, 15, 80, 35);
 		panel_NatVoter.add(rdbtn_NatVoter_No);
 		
+		ButtonGroup natGroup = new ButtonGroup();
+		natGroup.add(rdbtn_NatVoter_Yes);
+		natGroup.add(rdbtn_NatVoter_No);
+		
 		JButton btnNewButton = new JButton("Register");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// REWORK!! add a feature na kahit hindi exactly tama yung ininput, basta andon yung thought ma nonormalize sya
+				// for instance, sa municipality: City of Maniila nasa database, kahit manila lang ilagay nila
+				// dat maging City of Manila parin
+				ArrayList<newTextField> rah = new ArrayList<newTextField>();
+				String surname = checkIfMissing(textField_Surname, rah);
+				String firstname = checkIfMissing(textField_Firstname, rah);
+				String initial = checkIfMissing(textField_Middlename, rah);
+				String suffix = textField_Suffix.getText();
+				String day = checkIfMissing(textField_Day, rah);
+				String month = checkIfMissing(textField_Month, rah);
+				String year = checkIfMissing(textField_Year, rah);
+				
+				String birthdate = year+"-"+month+"-"+day;
+				
+				String housenum = checkIfMissing(textField_HouseNum, rah);
+				String brgy = checkIfMissing(textField_Barangay, rah);
+				String municipal = checkIfMissing(textField_CityMunici, rah);
+				String region = checkIfMissing(textField_Region, rah);
+				String province = checkIfMissing(textField_Province, rah);
+				String distr = checkIfMissing(textField_District, rah); // REWORK!! make zone, district, and barangay as only integers
+				String zone = checkIfMissing(textField_Zone, rah);
+				String number = textField_PhoneNumber.getText();
+				String email = textField_Email.getText();
+				
+				String sex = (String) comboBox_Sex.getSelectedItem();
+				String civStat = (String) comboBox_CivilStats.getSelectedItem();
+				String youthClass = (String) comboBox_YouthClass.getSelectedItem();
+				String workStat = (String) comboBox_WorkStatus.getSelectedItem();
+				String educAttain = (String) comboBox_HighestEduc.getSelectedItem();
+				
+				boolean isSkVoter = rdbtn_SK_Yes.isSelected() ? true : false;
+				boolean isNatVoter = rdbtn_NatVoter_Yes.isSelected() ? true : false;
+				
+				String skVoterID = "2";
+				String natVoterID = "2";
+				if (isSkVoter) skVoterID = "1";
+				if (isNatVoter) natVoterID = "1";
+				
+				if (rah.size() > 0) {
+					if (rah.size() == 1) {
+						newTextField tf = rah.get(0);
+						JOptionPane.showMessageDialog(btnNewButton, tf.tfName + " cannot be blank!!!");
+					}
+					else { // REWORK!!! make a new window instead (internal message box if possible) na dynamically changes
+						String s = "";
+						for (newTextField tf : rah) {
+							s += tf.tfName + " ";
+						}
+						
+						JOptionPane.showMessageDialog(btnNewButton, "The following textbox cannot be blank: ");
+					}
+				}
+				else {
+					try {				
+						String sqlCheckIfRegistered = "SELECT `res_id` FROM `resident` WHERE first_name=? AND last_name=? AND birthdate=?";
+						
+						Connection conn = user.connect();
+		
+						PreparedStatement psCheckIfReg = conn.prepareStatement(sqlCheckIfRegistered);
+						psCheckIfReg.setString(1, firstname);
+						psCheckIfReg.setString(2, surname);
+						psCheckIfReg.setString(3, year+"-"+month+"-"+day);
+						
+						ResultSet rs =  psCheckIfReg.executeQuery();
+						
+						if (rs.next()) { // REWORK?? either true or false
+							JOptionPane.showMessageDialog(btnNewButton, "User already exists");
+						}
+						else {
+							String sqlCheckHighestID  = "SELECT `res_id`FROM `resident` ORDER BY CAST(`res_id` AS UNSIGNED) DESC LIMIT 1";
+							
+							PreparedStatement psCheckHighestID = conn.prepareStatement(sqlCheckHighestID);
+							ResultSet rsHighestID = psCheckHighestID.executeQuery();
+							
+							Pattern pattern = Pattern.compile("(.*-)([0-1])(\\d{4})");
+							Matcher matcher = pattern.matcher(rsHighestID.getString("res_id"));
+							int highestID = 0;
+							while (matcher.find()) {
+								highestID = Integer.parseInt(matcher.group(3));
+							}
+							
+							highestID++;
+							
+							String sqlRegister = "INSERT INTO `resident`(`res_id`, `first_name`, `middle_initial`, `last_name`,"
+									+ " `birthdate`, `sex`, `contact_num`, `email`, `address_id`, `demo_id`) VALUES(?,?,?,?,?,?,?,?,?,?)";
+							PreparedStatement psReg = conn.prepareStatement(sqlRegister);
+							
+							String resID = year+"-1"+highestID; // REWORK!! palitan yung 1 ng dynamic if registered na ba or not
+							psReg.setString(1, resID);
+							psReg.setString(2, firstname);
+							psReg.setString(3, initial);
+							psReg.setString(4, surname);
+							psReg.setString(5, birthdate); // REWORK!! add suffix sa database
+							psReg.setString(6, sex);
+							psReg.setString(7, number);
+							psReg.setString(8, email);
+							
+							// logic for getting the address ID
+							String sqlCheckIfAddressExists = "SELECT `address_id` FROM `address` WHERE zone=? AND district=? AND house_num=?";
+							
+							PreparedStatement psCheckIfAddressExists = conn.prepareStatement(sqlCheckIfAddressExists);
+							psCheckIfAddressExists.setString(1, zone);
+							psCheckIfAddressExists.setString(2, distr);
+							psCheckIfAddressExists.setString(3, housenum);
+							
+							ResultSet rsCheckIfAddressExists = psCheckIfAddressExists.executeQuery();
+							String addID = "";
+							
+							while(rsCheckIfAddressExists.next()) {
+								if (rsCheckIfAddressExists.getString("address_id") == null) {
+									psReg.setString(9, zone+housenum+distr);
+									break;
+								}
+								else {
+									addID = rsCheckIfAddressExists.getString("address_id");
+									psReg.setString(9, addID);
+									break;
+								}
+							}
+							
+							String demoID = demoIdPicker(comboBox_Sex) + demoIdPicker(comboBox_YouthClass)+ demoIdPicker(comboBox_WorkStatus)
+							+ demoIdPicker(comboBox_HighestEduc) + skVoterID + natVoterID;
+							// logic for getting the Demographic ID
+							String sqlCheckIfDemoExists = "SELECT `demo_id` FROM `demographic` WHERE demo_id=?";
+
+							PreparedStatement psCheckIfDemoExists = conn.prepareStatement(sqlCheckIfDemoExists);
+							psCheckIfDemoExists.setString(1, demoID);
+							
+							ResultSet rsCheckIfDemoExists = psCheckIfDemoExists.executeQuery();
+							
+							while (rsCheckIfDemoExists.next()) {
+								if (rsCheckIfDemoExists.getString("demo_id") == null) {
+									psReg.setString(9, demoID);
+									
+									String sqlDemoRegister = "INSERT INTO `demographic`(`demo_id`, `civil_stat`, `youthAge_grp`, "
+											+ "`educ_background`, `youth_class`, `work_stat`, `reg_SKVoter`, `reg_natVoter`) VALUES (?,?,?,?,?,?,?,?)";
+									
+									PreparedStatement psDemoRegister = conn.prepareStatement(sqlDemoRegister);
+									psDemoRegister.setString(1, demoID);
+									psDemoRegister.setString(2, civStat);
+									psDemoRegister.setString(3, demoID);
+									psDemoRegister.setString(4, educAttain);
+									psDemoRegister.setString(5, demoID);
+									psDemoRegister.setString(6, demoID);
+									psDemoRegister.setString(7, demoID);
+									psDemoRegister.setString(8, demoID);
+									
+									ResultSet rsDemoRegister = psDemoRegister.executeQuery();
+								}
+							}
+							
+						}
+					}
+					catch (Exception err) {
+						JOptionPane.showMessageDialog(btnNewButton, err);
+					}					
+				}
+
+			}
+		});
 		btnNewButton.setForeground(new Color(255, 255, 255));
 		btnNewButton.setFont(new Font("Arial", Font.PLAIN, 14));
 		btnNewButton.setBackground(new Color(41, 139, 37));
@@ -499,4 +693,91 @@ public class RegisterUser {
 		frame.setBounds(100, 100, 1080, 720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
+	
+	public static String checkIfMissing(newTextField textfield, ArrayList<newTextField> rah) {
+		if (textfield.getText() == null) {
+			rah.add(textfield);
+			return null;
+		}
+		else {
+			return textfield.getText();
+		}
+	}
+	
+	class MyIntFilter extends DocumentFilter {
+		@Override
+		public void insertString(FilterBypass fb, int offset, String string,
+				javax.swing.text.AttributeSet attr) throws BadLocationException {
+
+			Document doc = fb.getDocument();
+			StringBuilder sb = new StringBuilder();
+			sb.append(doc.getText(0, doc.getLength()));
+			sb.insert(offset, string);
+
+			if (test(sb.toString())) {
+				super.insertString(fb, offset, string, attr);
+			} else {
+				JOptionPane.showMessageDialog(frame, "ERROR1");
+			}
+		}
+
+		private boolean test(String text) {
+			try {
+				Integer.parseInt(text);
+				return true;
+			} catch (NumberFormatException e) {
+				return false;
+			}
+		}
+
+		@Override
+		public void replace(FilterBypass fb, int offset, int length, String text,
+				javax.swing.text.AttributeSet attrs) throws BadLocationException {
+
+			Document doc = fb.getDocument();
+			StringBuilder sb = new StringBuilder();
+			sb.append(doc.getText(0, doc.getLength()));
+			sb.replace(offset, offset + length, text);
+
+			if (test(sb.toString())) {
+				super.replace(fb, offset, length, text, attrs);
+			} else {
+				JOptionPane.showMessageDialog(frame, "ERROR2");
+			}
+
+		}
+
+//		@Override
+//		public void remove(FilterBypass fb, int offset, int length)
+//				throws BadLocationException {
+//			Document doc = fb.getDocument();
+//			StringBuilder sb = new StringBuilder();
+//			sb.append(doc.getText(0, doc.getLength()));
+//			sb.delete(offset, offset + length);
+//
+//			if (test(sb.toString())) {
+//				super.remove(fb, offset, length);
+//			} else {
+//				JOptionPane.showMessageDialog(frame, "ERROR3");
+//			}
+//
+//		}
+	}
+	
+	public static String demoIdPicker(JComboBox comboBox) {
+		for (int i = 0; i < comboBox.getItemCount(); i++) {
+			if (comboBox.getSelectedIndex() == i) return String.valueOf(i);
+		}
+		return null;
+	}
+	
+	@SuppressWarnings("serial")
+	public class newTextField extends JTextField {
+		public String tfName;
+		
+		public newTextField(String tfName) {
+			this.tfName = tfName;
+		}
+	}
 }
+

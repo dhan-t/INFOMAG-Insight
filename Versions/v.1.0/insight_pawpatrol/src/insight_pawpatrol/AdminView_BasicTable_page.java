@@ -330,7 +330,7 @@ public class AdminView_BasicTable_page {
 						if (suffix == null) suffix = "";
 						String sex = rs.getString("Sex");
 						String number = rs.getString("Contact_Num");
-						String address = rs.getString("Region") + " " + rs.getString("City/Municipality") + " " + rs.getString("Barangay");
+						String address = rs.getString("Region") + " " + rs.getString("municipality") + " " + rs.getString("Barangay");
 						
 						String birthDate = rs.getString("Birthdate");
 						String youthClass = rs.getString("Youth_Class");
