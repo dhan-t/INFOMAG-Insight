@@ -461,6 +461,7 @@ public class AdminView_BasicTable_page {
 					int indexToChange = table.getSelectedRow();
 					Object checker = table.getValueAt(indexToChange, 0);
 					
+					
 					if (indexToChange < 0) {
 						JOptionPane.showMessageDialog(btn_UpdateInfo, "Please select row to delete");
 					}
@@ -468,15 +469,29 @@ public class AdminView_BasicTable_page {
 						JOptionPane.showMessageDialog(btn_UpdateInfo, "Please select a valid row to delete");
 					}
 					else {
+						Object adChecker = adTable.getValueAt(indexToChange, 1);
 						try {
+							Object[] options = {"Yes, please",
+							"No, thanks"};
+
 							String sqlDelete = "DELETE FROM `resident` WHERE Res_ID=?";
 							Connection conn = user.connect();
 							PreparedStatement ps = conn.prepareStatement(sqlDelete);
 							ps.setString(1, checker.toString());
 							
-							ps.execute();
-							tblModel.removeRow(indexToChange);
-							adTblModel.removeRow(indexToChange);
+							int n = JOptionPane.showOptionDialog(frame,
+									"Are you sure you want to delete: " + checker.toString() + " " + adChecker.toString(),
+									"Are You sure??",
+									JOptionPane.YES_NO_OPTION,
+									JOptionPane.WARNING_MESSAGE,
+									null, options,
+									options[1]);
+							
+							if (n == 0) {
+								ps.execute();
+								tblModel.removeRow(indexToChange);
+								adTblModel.removeRow(indexToChange);
+							}
 						}
 						catch (Exception err) {
 							JOptionPane.showMessageDialog(btn_DeleteInfo, err);
@@ -494,11 +509,29 @@ public class AdminView_BasicTable_page {
 						JOptionPane.showMessageDialog(btn_UpdateInfo, "Please select a valid row to delete");
 					}
 					else {
+						Object adChecker = adTable.getValueAt(indexToChange, 1);
 						try {
+							Object[] options = {"Yes, please",
+							"No, thanks"};
+							
 							String sqlDelete = "DELETE FROM `resident` WHERE Res_ID=?";
 							Connection conn = user.connect();
 							PreparedStatement ps = conn.prepareStatement(sqlDelete);
 							ps.setString(1, checker.toString());
+							
+							int n = JOptionPane.showOptionDialog(frame,
+									"Are you sure you want to delete: " + checker.toString() + " " + adChecker.toString(),
+									"Are You sure??",
+									JOptionPane.YES_NO_OPTION,
+									JOptionPane.WARNING_MESSAGE,
+									null, options,
+									options[1]);
+							
+							if (n == 0) {
+								ps.execute();
+								tblModel.removeRow(indexToChange);
+								adTblModel.removeRow(indexToChange);
+							}
 							
 							ps.execute();
 							tblModel.removeRow(indexToChange);
@@ -506,6 +539,7 @@ public class AdminView_BasicTable_page {
 						}
 						catch (Exception err) {
 							JOptionPane.showMessageDialog(btn_DeleteInfo, err);
+
 						}
 					}
 				}
