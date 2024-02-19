@@ -142,7 +142,7 @@ public class LoginPage {
 							manager.setUsername("root"); // REWORK!!! implement a way to make specific perms
 							manager.setPassword("5wLCmVS9Q2Z4tvVp");
 							frame.dispose();
-							new AdminView_BasicTable_page(manager, false);
+							new AdminView_BasicTable_page(manager, false, false);
 						}
 					}
 						

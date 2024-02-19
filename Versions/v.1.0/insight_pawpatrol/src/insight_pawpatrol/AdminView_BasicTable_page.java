@@ -44,8 +44,11 @@ public class AdminView_BasicTable_page {
 	private int rows = 0;
 	private boolean bscORadv = true;
 	private boolean fromRegister = false;
+	private boolean fromEdit = false;
 	
-	public AdminView_BasicTable_page(DBManager user, boolean fromRegister) {
+	public AdminView_BasicTable_page(DBManager user, boolean fromRegister, boolean fromEdit) {
+		System.out.println(fromRegister + " " + fromEdit);
+		this.fromEdit = fromEdit;
 		this.fromRegister = fromRegister;
 		this.user = user;
 		initialize();
@@ -304,7 +307,6 @@ public class AdminView_BasicTable_page {
 		
 		if (fromRegister) {
 			try {
-				String searchText = textField_Searchbar.getText();
 				String sqlFetch = "SELECT * FROM `resident` INNER JOIN address ON resident.Address_ID=address.Address_ID INNER JOIN demographic ON resident.Demo_ID=demographic.Demo_ID WHERE First_Name=?";
 				
 				Connection conn = user.connect();
@@ -320,6 +322,56 @@ public class AdminView_BasicTable_page {
 					adTblModel.removeRow(i);
 				}
 				while (rs.next()) {
+					String iD = rs.getString("res_id");
+					String surname = rs.getString("last_Name");
+					String firstName = rs.getString("first_Name");
+					String initial = rs.getString("middle_initial");
+//					String suffix = rs.getString("suffix"); // REWORK!! Add suffix sa db
+					String suffix = null;
+					String sex = rs.getString("sex");
+					String number = rs.getString("contact_num");
+					String address = rs.getString("region") + " " + rs.getString("municipality") + " " + rs.getString("barangay");
+					
+					String birthDate = rs.getString("birthdate");
+					String youthClass = rs.getString("Youth_Class");
+					String employed = rs.getString("work_stat");
+					String skVoter = rs.getString("reg_SKVoter");
+					String natVoter = rs.getString("reg_natVoter");
+					
+
+					String tblData[] = {iD, surname, firstName, initial, suffix, sex, number, address};
+					String adtblData[] = {iD, surname + ", " + firstName + " " + initial + " " + suffix, birthDate, youthClass, employed, skVoter, natVoter, address};
+					System.out.println(rowCounter);
+
+					tblModel.insertRow(rowCounter, tblData);
+					adTblModel.insertRow(rowCounter, adtblData);
+					rowCounter++;
+				}
+				rows = rowCounter;
+			}
+			catch (Exception err) {
+				JOptionPane.showMessageDialog(tglbtn_BasicView, err);
+			}
+		}
+		
+		if (fromEdit) {
+			try {
+				String sqlFetch = "SELECT * FROM `resident` INNER JOIN address ON resident.Address_ID=address.Address_ID INNER JOIN demographic ON resident.Demo_ID=demographic.Demo_ID WHERE First_Name=?";
+				
+				Connection conn = user.connect();
+				PreparedStatement ps = conn.prepareStatement(sqlFetch);
+				ps.setString(1, EditUser.lastInsertedName);
+	
+				ResultSet rs =  ps.executeQuery();
+				int rowCounter = 0;
+				DefaultTableModel tblModel = (DefaultTableModel)table.getModel();
+				DefaultTableModel adTblModel = (DefaultTableModel)adTable.getModel();
+				for (int i = 0; i <= rows; i++) {
+					tblModel.removeRow(i);
+					adTblModel.removeRow(i);
+				}
+				while (rs.next()) {
+					System.out.println("from Edit");
 					String iD = rs.getString("res_id");
 					String surname = rs.getString("last_Name");
 					String firstName = rs.getString("first_Name");
@@ -425,8 +477,20 @@ public class AdminView_BasicTable_page {
 						JOptionPane.showMessageDialog(btn_UpdateInfo, "Please select a valid row to edit");
 					}
 					else {
-						frame.dispose();
-						new EditUser();
+						try {
+							String sqlFetch = "SELECT * FROM `resident` INNER JOIN address ON resident.Address_ID=address.Address_ID INNER JOIN "
+									+ "demographic ON resident.Demo_ID=demographic.Demo_ID WHERE res_id=?";
+							Connection conn = user.connect();
+							PreparedStatement ps = conn.prepareStatement(sqlFetch);
+							ps.setString(1, checker.toString());
+							ResultSet rs =  ps.executeQuery();
+							
+							frame.dispose();
+							new EditUser(rs, user);
+						}
+						catch (Exception err){
+							JOptionPane.showMessageDialog(btn_UpdateInfo, err);
+						}
 					}
 				}
 				else {
@@ -440,8 +504,20 @@ public class AdminView_BasicTable_page {
 						JOptionPane.showMessageDialog(btn_UpdateInfo, "Please select a valid row to edit");
 					}
 					else {
-						frame.dispose();
-						new EditUser();
+						try {
+							String sqlFetch = "SELECT * FROM `resident` INNER JOIN address ON resident.Address_ID=address.Address_ID INNER JOIN "
+									+ "demographic ON resident.Demo_ID=demographic.Demo_ID WHERE res_id=?";
+							Connection conn = user.connect();
+							PreparedStatement ps = conn.prepareStatement(sqlFetch);
+							ps.setString(1, checker.toString());
+							ResultSet rs =  ps.executeQuery();
+							
+							frame.dispose();
+							new EditUser(rs, user);
+						}
+						catch (Exception err){
+							JOptionPane.showMessageDialog(btn_UpdateInfo, err);
+						}
 					}
 				}
 			}

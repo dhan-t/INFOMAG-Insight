@@ -735,7 +735,7 @@ public class RegisterUser {
 							JOptionPane.showMessageDialog(btnNewButton, "Successfully registered");
 							
 							frame.dispose();
-							new AdminView_BasicTable_page(user, true);
+							new AdminView_BasicTable_page(user, true, false);
 							}
 					}
 					catch (Exception err) {
