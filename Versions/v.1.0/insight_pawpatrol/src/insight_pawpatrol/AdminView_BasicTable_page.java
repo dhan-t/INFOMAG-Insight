@@ -43,8 +43,10 @@ public class AdminView_BasicTable_page {
 	private DBManager user;
 	private int rows = 0;
 	private boolean bscORadv = true;
-
-	public AdminView_BasicTable_page(DBManager user) {
+	private boolean fromRegister = false;
+	
+	public AdminView_BasicTable_page(DBManager user, boolean fromRegister) {
+		this.fromRegister = fromRegister;
 		this.user = user;
 		initialize();
 	}
@@ -300,6 +302,56 @@ public class AdminView_BasicTable_page {
 		tglbtn_BasicView.setBounds(247, 38, 100, 25);
 		panel_TopRight.add(tglbtn_BasicView);
 		
+		if (fromRegister) {
+			try {
+				String searchText = textField_Searchbar.getText();
+				String sqlFetch = "SELECT * FROM `resident` INNER JOIN address ON resident.Address_ID=address.Address_ID INNER JOIN demographic ON resident.Demo_ID=demographic.Demo_ID WHERE First_Name=?";
+				
+				Connection conn = user.connect();
+				PreparedStatement ps = conn.prepareStatement(sqlFetch);
+				ps.setString(1, RegisterUser.lastInsertedName);
+	
+				ResultSet rs =  ps.executeQuery();
+				int rowCounter = 0;
+				DefaultTableModel tblModel = (DefaultTableModel)table.getModel();
+				DefaultTableModel adTblModel = (DefaultTableModel)adTable.getModel();
+				for (int i = 0; i <= rows; i++) {
+					tblModel.removeRow(i);
+					adTblModel.removeRow(i);
+				}
+				while (rs.next()) {
+					String iD = rs.getString("res_id");
+					String surname = rs.getString("last_Name");
+					String firstName = rs.getString("first_Name");
+					String initial = rs.getString("middle_initial");
+//					String suffix = rs.getString("suffix"); // REWORK!! Add suffix sa db
+					String suffix = null;
+					String sex = rs.getString("sex");
+					String number = rs.getString("contact_num");
+					String address = rs.getString("region") + " " + rs.getString("municipality") + " " + rs.getString("barangay");
+					
+					String birthDate = rs.getString("birthdate");
+					String youthClass = rs.getString("Youth_Class");
+					String employed = rs.getString("work_stat");
+					String skVoter = rs.getString("reg_SKVoter");
+					String natVoter = rs.getString("reg_natVoter");
+					
+
+					String tblData[] = {iD, surname, firstName, initial, suffix, sex, number, address};
+					String adtblData[] = {iD, surname + ", " + firstName + " " + initial + " " + suffix, birthDate, youthClass, employed, skVoter, natVoter, address};
+					System.out.println(rowCounter);
+
+					tblModel.insertRow(rowCounter, tblData);
+					adTblModel.insertRow(rowCounter, adtblData);
+					rowCounter++;
+				}
+				rows = rowCounter;
+			}
+			catch (Exception err) {
+				JOptionPane.showMessageDialog(tglbtn_BasicView, err);
+			}
+		}
+		
 		JButton btn_Search = new JButton("Search");
 		btn_Search.addMouseListener(new MouseAdapter() {
 			@Override
@@ -322,21 +374,21 @@ public class AdminView_BasicTable_page {
 						adTblModel.removeRow(i);
 					}
 					while (rs.next()) {
-						String iD = rs.getString("Res_ID");
-						String surname = rs.getString("Last_Name");
-						String firstName = rs.getString("First_Name");
-						String initial = rs.getString("Mid_Initial");
-						String suffix = rs.getString("Suffix");
-						if (suffix == null) suffix = "";
-						String sex = rs.getString("Sex");
-						String number = rs.getString("Contact_Num");
-						String address = rs.getString("Region") + " " + rs.getString("municipality") + " " + rs.getString("Barangay");
+						String iD = rs.getString("res_id");
+						String surname = rs.getString("last_Name");
+						String firstName = rs.getString("first_Name");
+						String initial = rs.getString("middle_initial");
+//						String suffix = rs.getString("suffix"); // REWORK!! Add suffix sa db
+						String suffix = null;
+						String sex = rs.getString("sex");
+						String number = rs.getString("contact_num");
+						String address = rs.getString("region") + " " + rs.getString("municipality") + " " + rs.getString("barangay");
 						
-						String birthDate = rs.getString("Birthdate");
+						String birthDate = rs.getString("birthdate");
 						String youthClass = rs.getString("Youth_Class");
-						String employed = rs.getString("Work_stat");
-						String skVoter = rs.getString("Reg_SKVoter");
-						String natVoter = rs.getString("Reg_NatVoter");
+						String employed = rs.getString("work_stat");
+						String skVoter = rs.getString("reg_SKVoter");
+						String natVoter = rs.getString("reg_natVoter");
 						
 
 						String tblData[] = {iD, surname, firstName, initial, suffix, sex, number, address};
@@ -352,7 +404,6 @@ public class AdminView_BasicTable_page {
 				catch (Exception err) {
 					JOptionPane.showMessageDialog(btn_Search, err);
 				}
-				
 			}
 		});
 		btn_Search.setBackground(new Color(255, 255, 255));

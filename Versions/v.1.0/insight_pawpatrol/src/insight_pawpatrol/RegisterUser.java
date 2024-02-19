@@ -44,6 +44,9 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JRadioButton;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
 
 public class RegisterUser {
 	private JFrame frame;
@@ -65,7 +68,11 @@ public class RegisterUser {
 	private newTextField textField_PhoneNumber;
 	private newTextField textField_Email;
 	
+	
+	private static ArrayList<newTextField> rah = new ArrayList<newTextField>();
 	private DBManager user;
+	
+	public static String lastInsertedName = "";
 	
 	public RegisterUser(DBManager user) {
 		this.user = user;
@@ -233,7 +240,7 @@ public class RegisterUser {
 		JComboBox comboBox_Sex = new JComboBox();
 		comboBox_Sex.setFont(new Font("Arial", Font.PLAIN, 14));
 		comboBox_Sex.setBackground(new Color(255, 255, 255));
-		comboBox_Sex.setModel(new DefaultComboBoxModel(new String[] {"", "Male", "Female"}));
+		comboBox_Sex.setModel(new DefaultComboBoxModel(new String[] {"", "M", "F"}));
 		comboBox_Sex.setBounds(0, 15, 77, 35);
 		panel_Sex.add(comboBox_Sex);
 		
@@ -528,24 +535,24 @@ public class RegisterUser {
 				// REWORK!! add a feature na kahit hindi exactly tama yung ininput, basta andon yung thought ma nonormalize sya
 				// for instance, sa municipality: City of Maniila nasa database, kahit manila lang ilagay nila
 				// dat maging City of Manila parin
-				ArrayList<newTextField> rah = new ArrayList<newTextField>();
-				String surname = checkIfMissing(textField_Surname, rah);
-				String firstname = checkIfMissing(textField_Firstname, rah);
-				String initial = checkIfMissing(textField_Middlename, rah);
+				
+				String surname = checkIfMissing(textField_Surname);
+				String firstname = checkIfMissing(textField_Firstname);
+				String initial = checkIfMissing(textField_Middlename);
 				String suffix = textField_Suffix.getText();
-				String day = checkIfMissing(textField_Day, rah);
-				String month = checkIfMissing(textField_Month, rah);
-				String year = checkIfMissing(textField_Year, rah);
+				String day = checkIfMissing(textField_Day);
+				String month = checkIfMissing(textField_Month);
+				String year = checkIfMissing(textField_Year);
 				
 				String birthdate = year+"-"+month+"-"+day;
 				
-				String housenum = checkIfMissing(textField_HouseNum, rah);
-				String brgy = checkIfMissing(textField_Barangay, rah);
-				String municipal = checkIfMissing(textField_CityMunici, rah);
-				String region = checkIfMissing(textField_Region, rah);
-				String province = checkIfMissing(textField_Province, rah);
-				String distr = checkIfMissing(textField_District, rah); // REWORK!! make zone, district, and barangay as only integers
-				String zone = checkIfMissing(textField_Zone, rah);
+				String housenum = checkIfMissing(textField_HouseNum);
+				String brgy = checkIfMissing(textField_Barangay);
+				String municipal = checkIfMissing(textField_CityMunici);
+				String region = checkIfMissing(textField_Region);
+				String province = checkIfMissing(textField_Province);
+				String distr = checkIfMissing(textField_District); // REWORK!! make zone, district, and barangay as only integers
+				String zone = checkIfMissing(textField_Zone);
 				String number = textField_PhoneNumber.getText();
 				String email = textField_Email.getText();
 				
@@ -557,28 +564,31 @@ public class RegisterUser {
 				
 				boolean isSkVoter = rdbtn_SK_Yes.isSelected() ? true : false;
 				boolean isNatVoter = rdbtn_NatVoter_Yes.isSelected() ? true : false;
-				
+
 				String skVoterID = "2";
 				String natVoterID = "2";
 				if (isSkVoter) skVoterID = "1";
 				if (isNatVoter) natVoterID = "1";
-				
-				if (rah.size() > 0) {
+
+				if (rah.size() != 0) {
 					if (rah.size() == 1) {
 						newTextField tf = rah.get(0);
 						JOptionPane.showMessageDialog(btnNewButton, tf.tfName + " cannot be blank!!!");
+
 					}
 					else { // REWORK!!! make a new window instead (internal message box if possible) na dynamically changes
 						String s = "";
 						for (newTextField tf : rah) {
 							s += tf.tfName + " ";
 						}
-						
-						JOptionPane.showMessageDialog(btnNewButton, "The following textbox cannot be blank: ");
+
+						JOptionPane.showMessageDialog(btnNewButton, "The following textbox cannot be blank: " + s);
 					}
 				}
 				else {
-					try {				
+
+					try {
+						lastInsertedName = firstname;
 						String sqlCheckIfRegistered = "SELECT `res_id` FROM `resident` WHERE first_name=? AND last_name=? AND birthdate=?";
 						
 						Connection conn = user.connect();
@@ -589,7 +599,7 @@ public class RegisterUser {
 						psCheckIfReg.setString(3, year+"-"+month+"-"+day);
 						
 						ResultSet rs =  psCheckIfReg.executeQuery();
-						
+						System.out.println("CHECKPOINT 2");
 						if (rs.next()) { // REWORK?? either true or false
 							JOptionPane.showMessageDialog(btnNewButton, "User already exists");
 						}
@@ -600,12 +610,16 @@ public class RegisterUser {
 							ResultSet rsHighestID = psCheckHighestID.executeQuery();
 							
 							Pattern pattern = Pattern.compile("(.*-)([0-1])(\\d{4})");
-							Matcher matcher = pattern.matcher(rsHighestID.getString("res_id"));
+							Matcher matcher = null;
+							if (rsHighestID.next()) {
+								matcher = pattern.matcher(rsHighestID.getString("res_id"));
+							}
+							
 							int highestID = 0;
 							while (matcher.find()) {
 								highestID = Integer.parseInt(matcher.group(3));
 							}
-							
+							System.out.println("CHECKPOINT 3");
 							highestID++;
 							
 							String sqlRegister = "INSERT INTO `resident`(`res_id`, `first_name`, `middle_initial`, `last_name`,"
@@ -621,7 +635,7 @@ public class RegisterUser {
 							psReg.setString(6, sex);
 							psReg.setString(7, number);
 							psReg.setString(8, email);
-							
+							System.out.println("CHECKPOINT 4");
 							// logic for getting the address ID
 							String sqlCheckIfAddressExists = "SELECT `address_id` FROM `address` WHERE zone=? AND district=? AND house_num=?";
 							
@@ -631,20 +645,38 @@ public class RegisterUser {
 							psCheckIfAddressExists.setString(3, housenum);
 							
 							ResultSet rsCheckIfAddressExists = psCheckIfAddressExists.executeQuery();
+							
 							String addID = "";
-							
-							while(rsCheckIfAddressExists.next()) {
-								if (rsCheckIfAddressExists.getString("address_id") == null) {
-									psReg.setString(9, zone+housenum+distr);
-									break;
-								}
-								else {
+							boolean doesAdIdExist = true;
+							System.out.println("CHECKPOINT 5");
+							if (rsCheckIfAddressExists.next()) {
+									System.out.println("yes address");
 									addID = rsCheckIfAddressExists.getString("address_id");
-									psReg.setString(9, addID);
-									break;
-								}
 							}
-							
+							else {
+								System.out.println("no address");
+								doesAdIdExist = false;
+							}
+							if (doesAdIdExist) {
+								System.out.println("ALREDY EXISTS");
+								System.out.println(addID);
+								psReg.setInt(9, Integer.parseInt(addID));
+							}
+							else {
+								String sqlAddressRegister = "INSERT INTO `address`(`address_id`, `region`, `province`, `municipality`, `barangay`, `zone`, `house_num`, `district`) VALUES (?,?,?,?,?,?,?,?)";
+								PreparedStatement psAddressRegister = conn.prepareStatement(sqlAddressRegister);
+								psAddressRegister.setInt(1, Integer.parseInt((zone+housenum+distr).trim()));
+								psAddressRegister.setString(2, region);
+								psAddressRegister.setString(3, province);
+								psAddressRegister.setString(4, municipal);
+								psAddressRegister.setString(5, brgy);
+								psAddressRegister.setString(6, zone);
+								psAddressRegister.setString(7, housenum);
+								psAddressRegister.setString(8, distr);
+								psAddressRegister.execute();
+								psReg.setInt(9, Integer.parseInt(zone+housenum+distr));
+							}
+							System.out.println("CHECKPOINT 6");
 							String demoID = demoIdPicker(comboBox_Sex) + demoIdPicker(comboBox_YouthClass)+ demoIdPicker(comboBox_WorkStatus)
 							+ demoIdPicker(comboBox_HighestEduc) + skVoterID + natVoterID;
 							// logic for getting the Demographic ID
@@ -654,35 +686,62 @@ public class RegisterUser {
 							psCheckIfDemoExists.setString(1, demoID);
 							
 							ResultSet rsCheckIfDemoExists = psCheckIfDemoExists.executeQuery();
+							System.out.println("CHECKPOINT 7");
 							
-							while (rsCheckIfDemoExists.next()) {
-								if (rsCheckIfDemoExists.getString("demo_id") == null) {
-									psReg.setString(9, demoID);
-									
-									String sqlDemoRegister = "INSERT INTO `demographic`(`demo_id`, `civil_stat`, `youthAge_grp`, "
-											+ "`educ_background`, `youth_class`, `work_stat`, `reg_SKVoter`, `reg_natVoter`) VALUES (?,?,?,?,?,?,?,?)";
-									
-									PreparedStatement psDemoRegister = conn.prepareStatement(sqlDemoRegister);
-									psDemoRegister.setString(1, demoID);
-									psDemoRegister.setString(2, civStat);
-									psDemoRegister.setString(3, demoID);
-									psDemoRegister.setString(4, educAttain);
-									psDemoRegister.setString(5, demoID);
-									psDemoRegister.setString(6, demoID);
-									psDemoRegister.setString(7, demoID);
-									psDemoRegister.setString(8, demoID);
-									
-									ResultSet rsDemoRegister = psDemoRegister.executeQuery();
-								}
+							if (rsCheckIfDemoExists.next()) {
+									demoID = rsCheckIfDemoExists.getString("demo_id");
 							}
+							else {
+								String sqlDemoRegister = "INSERT INTO `demographic`(`demo_id`, `civil_stat`, `youthAge_grp`, "
+										+ "`educ_background`, `youth_class`, `work_stat`, `reg_SKVoter`, `reg_natVoter`) VALUES (?,?,?,?,?,?,?,?)";
+								
+								int age = ageCalculator(year, month, day);
+								String ythAge;
+								if (age < 15) {
+									ythAge = "Children";
+								}
+								else if (age >= 15 && age <= 17) {
+									ythAge = "Child youth";
+								}
+								else if (age >= 18 && age <= 24) {
+									ythAge = "Core youth";
+								}
+								else if (age >= 25 && age <= 30) {
+									ythAge = "Adult youth";
+								}
+								else {
+									ythAge = "Old and Decrepit";
+								}
+								
+								String skVoter = isSkVoter ? "Yes" : "No";
+								String natVoter = isNatVoter ? "Yes" : "No";
+								
+								PreparedStatement psDemoRegister = conn.prepareStatement(sqlDemoRegister);
+								psDemoRegister.setString(1, demoID);
+								psDemoRegister.setString(2, civStat);
+								psDemoRegister.setString(3, ythAge);
+								psDemoRegister.setString(4, educAttain);
+								psDemoRegister.setString(5, youthClass);
+								psDemoRegister.setString(6, workStat);
+								psDemoRegister.setString(7, skVoter);
+								psDemoRegister.setString(8, natVoter);
+								
+								psDemoRegister.execute();
+							}
+							System.out.println("CHECKPOINT 8");
+							psReg.setString(10, demoID);
+							psReg.execute();
+							// REWORK!!! make a new window instead (internal message box if possible) na dynamically changes like kung ano info ilagay ni tanga
+							JOptionPane.showMessageDialog(btnNewButton, "Successfully registered");
 							
-						}
+							frame.dispose();
+							new AdminView_BasicTable_page(user, true);
+							}
 					}
 					catch (Exception err) {
 						JOptionPane.showMessageDialog(btnNewButton, err);
 					}					
 				}
-
 			}
 		});
 		btnNewButton.setForeground(new Color(255, 255, 255));
@@ -694,13 +753,18 @@ public class RegisterUser {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
-	public static String checkIfMissing(newTextField textfield, ArrayList<newTextField> rah) {
-		if (textfield.getText() == null) {
+	public static int ageCalculator(String year, String month, String day) {
+		LocalDate dob = LocalDate.parse(year + "-" + month + "-" + day);
+		return Period.between(dob, LocalDate.now()).getYears();
+	}
+	
+	public static String checkIfMissing(newTextField textfield) {
+		if (textfield.getText().equals("")) {
 			rah.add(textfield);
 			return null;
 		}
 		else {
-			return textfield.getText();
+			return textfield.getText().trim();
 		}
 	}
 	
