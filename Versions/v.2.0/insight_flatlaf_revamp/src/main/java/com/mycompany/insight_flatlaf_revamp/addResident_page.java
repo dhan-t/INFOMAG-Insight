@@ -4,12 +4,24 @@
  */
 package com.mycompany.insight_flatlaf_revamp;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.ArrayList;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.DocumentFilter;
+
 /**
  *
  * @author Dhan Michea
  */
 public class addResident_page extends javax.swing.JFrame {
     private final DBManager user;
+    private static ArrayList<newTextField> rah = new ArrayList<newTextField>();
+    public static String lastInsertedName = "";
     /**
      * Creates new form home_page
      */
@@ -95,7 +107,6 @@ public class addResident_page extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(90, 90, 90));
-        setMaximumSize(new java.awt.Dimension(1280, 720));
         setMinimumSize(new java.awt.Dimension(1280, 720));
         setResizable(false);
         setSize(new java.awt.Dimension(1280, 720));
@@ -250,7 +261,7 @@ public class addResident_page extends javax.swing.JFrame {
         label_Birthday.setText("Birthday");
 
         textfield_BDAY_YEAR.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        textfield_BDAY_YEAR.setText(" ");
+        textfield_BDAY_YEAR.setText("YYYY");
         textfield_BDAY_YEAR.setMaximumSize(new java.awt.Dimension(70, 35));
         textfield_BDAY_YEAR.setMinimumSize(new java.awt.Dimension(70, 35));
         textfield_BDAY_YEAR.setPreferredSize(new java.awt.Dimension(70, 35));
@@ -261,7 +272,7 @@ public class addResident_page extends javax.swing.JFrame {
         });
 
         textfield_BDAY_MONTH.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        textfield_BDAY_MONTH.setText(" ");
+        textfield_BDAY_MONTH.setText("MM");
         textfield_BDAY_MONTH.setMaximumSize(new java.awt.Dimension(50, 35));
         textfield_BDAY_MONTH.setMinimumSize(new java.awt.Dimension(50, 35));
         textfield_BDAY_MONTH.setPreferredSize(new java.awt.Dimension(50, 35));
@@ -272,7 +283,7 @@ public class addResident_page extends javax.swing.JFrame {
         });
 
         textfield_BDAY_DAY.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        textfield_BDAY_DAY.setText(" ");
+        textfield_BDAY_DAY.setText("DD");
         textfield_BDAY_DAY.setMaximumSize(new java.awt.Dimension(50, 35));
         textfield_BDAY_DAY.setMinimumSize(new java.awt.Dimension(50, 35));
         textfield_BDAY_DAY.setPreferredSize(new java.awt.Dimension(50, 35));
@@ -836,7 +847,98 @@ public class addResident_page extends javax.swing.JFrame {
     private void button_RegisterResidentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_RegisterResidentActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_button_RegisterResidentActionPerformed
+    
+    
+    public static int ageCalculator(String year, String month, String day) {
+        LocalDate dob = LocalDate.parse(year + "-" + month + "-" + day);
+        return Period.between(dob, LocalDate.now()).getYears();
+    }
 
+    public static String checkIfMissing(newTextField textfield) {
+            if (textfield.getText().equals("")) {
+                rah.add(textfield);
+                return null;
+            }
+            else {
+                return textfield.getText().trim();
+            }
+    }
+
+    class MyIntFilter extends DocumentFilter {
+        @Override
+        public void insertString(FilterBypass fb, int offset, String string,
+            javax.swing.text.AttributeSet attr) throws BadLocationException {
+
+            Document doc = fb.getDocument();
+            StringBuilder sb = new StringBuilder();
+            sb.append(doc.getText(0, doc.getLength()));
+            sb.insert(offset, string);
+
+            if (test(sb.toString())) {
+                super.insertString(fb, offset, string, attr);
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "error1");
+            }
+        }
+
+        private boolean test(String text) {
+            try {
+                Integer.parseInt(text);
+                return true;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+
+        @Override
+        public void replace(FilterBypass fb, int offset, int length, String text,
+            javax.swing.text.AttributeSet attrs) throws BadLocationException {
+
+            Document doc = fb.getDocument();
+            StringBuilder sb = new StringBuilder();
+            sb.append(doc.getText(0, doc.getLength()));
+            sb.replace(offset, offset + length, text);
+
+            if (test(sb.toString())) {
+                    super.replace(fb, offset, length, text, attrs);
+            } else {
+                    JOptionPane.showMessageDialog(rootPane, "ERROR 2");
+            }
+
+            }
+
+//		@Override
+//		public void remove(FilterBypass fb, int offset, int length)
+//				throws BadLocationException {
+//			Document doc = fb.getDocument();
+//			StringBuilder sb = new StringBuilder();
+//			sb.append(doc.getText(0, doc.getLength()));
+//			sb.delete(offset, offset + length);
+//
+//			if (test(sb.toString())) {
+//				super.remove(fb, offset, length);
+//			} else {
+//				JOptionPane.showMessageDialog(frame, "ERROR3");
+//			}
+//
+//		}
+    }
+
+    public static String demoIdPicker(JComboBox comboBox) {
+        for (int i = 0; i < comboBox.getItemCount(); i++) {
+            if (comboBox.getSelectedIndex() == i) return String.valueOf(i);
+        }
+        return null;
+    }
+
+    @SuppressWarnings("serial")
+    public class newTextField extends JTextField {
+            public String tfName;
+
+            public newTextField(String tfName) {
+                    this.tfName = tfName;
+            }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_Cancel;
     private javax.swing.JButton button_RegisterResident;

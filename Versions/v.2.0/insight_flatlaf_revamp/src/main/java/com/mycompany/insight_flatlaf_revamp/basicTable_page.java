@@ -98,6 +98,11 @@ public class basicTable_page extends javax.swing.JFrame {
         label_BasicTable.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         label_BasicTable.setText("Basic Table");
         label_BasicTable.setToolTipText("");
+        label_BasicTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                label_BasicTableMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout panel_sidePanelLayout = new javax.swing.GroupLayout(panel_sidePanel);
         panel_sidePanel.setLayout(panel_sidePanelLayout);
@@ -105,28 +110,30 @@ public class basicTable_page extends javax.swing.JFrame {
             panel_sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(label_Insight, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_sidePanelLayout.createSequentialGroup()
-                .addContainerGap(78, Short.MAX_VALUE)
-                .addGroup(panel_sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(label_BasicTable, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(label_AddResident, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(label_Home, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(label_AdvTable, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
-                .addGap(15, 15, 15))
+                .addContainerGap(77, Short.MAX_VALUE)
+                .addGroup(panel_sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(label_AddResident, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panel_sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panel_sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(label_BasicTable, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(label_AdvTable, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(label_Home, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(30, 30, 30))
         );
         panel_sidePanelLayout.setVerticalGroup(
             panel_sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_sidePanelLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(label_Insight, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addComponent(label_Home, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
-                .addComponent(label_AddResident, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(label_Home, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(label_BasicTable, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(label_AdvTable, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 365, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addComponent(label_AddResident, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 370, Short.MAX_VALUE))
         );
 
         panel_BrgyName.setBackground(new java.awt.Color(255, 214, 10));
@@ -271,7 +278,7 @@ public class basicTable_page extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panel_sidePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
+                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(panel_BrgyName, javax.swing.GroupLayout.PREFERRED_SIZE, 603, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -279,7 +286,7 @@ public class basicTable_page extends javax.swing.JFrame {
                         .addComponent(button_EditRes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(15, 15, 15)
                         .addComponent(button_RemoveRes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 29, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(scrollpane_MainScroll))
                 .addContainerGap())
         );
@@ -307,6 +314,7 @@ public class basicTable_page extends javax.swing.JFrame {
         if (user.getClearanceLvl() == 1) {
             button_EditRes.setVisible(false);
             button_RemoveRes.setVisible(false);
+            label_AddResident.setVisible(false);
         }
         
         // adding the Advanced table
@@ -389,7 +397,7 @@ public class basicTable_page extends javax.swing.JFrame {
             table_AdvTable.getColumnModel().getColumn(8).setResizable(false);
             table_AdvTable.getColumnModel().getColumn(8).setPreferredWidth(90);
         }
-        table_AdvTable.setVisible(false);
+        table_AdvTable.setVisible(true);
     }
     
     private void label_HomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_HomeMouseClicked
@@ -402,8 +410,8 @@ public class basicTable_page extends javax.swing.JFrame {
     }//GEN-LAST:event_label_AddResidentMouseClicked
 
     private void label_AdvTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_AdvTableMouseClicked
-    this.dispose();
-      advTable_page advTable_page = new advTable_page(user);        // TODO add your handling code here:
+        scrollpane_MainScroll.setViewportView(table_AdvTable);
+        isBasic = false;// TODO add your handling code here:
     }//GEN-LAST:event_label_AdvTableMouseClicked
 
     private void button_EditResMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_EditResMouseClicked
@@ -423,7 +431,7 @@ public class basicTable_page extends javax.swing.JFrame {
                 if ((boolean)tblModel.getValueAt(row, 0)) {
                     Object checker =  table_BasicTable.getValueAt(row, 1);
                     
-                    if (checker == null) {
+                    if (checker == null) { // error handling
                         JOptionPane.showMessageDialog(rootPane, "Please select a valid row to delete");
                         return;
                     }
@@ -436,7 +444,7 @@ public class basicTable_page extends javax.swing.JFrame {
             for (int row = 0; row < adTblModel.getRowCount(); row++) {
                     Object checker =  table_AdvTable.getValueAt(row, 1);
                     
-                    if (checker == null) {
+                    if (checker == null) { // error handling
                         JOptionPane.showMessageDialog(rootPane, "Please select a valid row to delete");
                         return;
                     }
@@ -444,8 +452,9 @@ public class basicTable_page extends javax.swing.JFrame {
             }  
         }
         
-        if (idsToRemove.isEmpty()) {
+        if (idsToRemove.isEmpty()) { // error handling
             JOptionPane.showMessageDialog(rootPane, "Please select row to delete");
+            return;
         }
         else {
             for (int i = 0; i < idsToRemove.size(); i++) {
@@ -456,6 +465,11 @@ public class basicTable_page extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_button_RemoveResActionPerformed
+
+    private void label_BasicTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_BasicTableMouseClicked
+        scrollpane_MainScroll.setViewportView(table_BasicTable);
+        isBasic = true;// TODO add your handling code here:
+    }//GEN-LAST:event_label_BasicTableMouseClicked
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_EditRes;
