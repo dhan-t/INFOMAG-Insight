@@ -213,6 +213,7 @@ public class advTable_page extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        table_AdvTable.setRequestFocusEnabled(false);
         table_AdvTable.setRowHeight(35);
         table_AdvTable.setShowGrid(true);
         table_AdvTable.getTableHeader().setResizingAllowed(false);

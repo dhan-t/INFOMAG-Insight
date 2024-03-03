@@ -34,4 +34,5 @@
         <maven.compiler.target>20</maven.compiler.target>
         <exec.mainClass>com.mycompany.insight_flatlaf_revamp.login_page</exec.mainClass>
     </properties>
+    <name>2.0.1</name>
 </project>

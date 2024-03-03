@@ -4,19 +4,32 @@
  */
 package com.mycompany.insight_flatlaf_revamp;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.ArrayList;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.DocumentFilter;
+
 /**
  *
  * @author Dhan Michea
  */
 public class addResident_page extends javax.swing.JFrame {
     private final DBManager user;
+    private static ArrayList<newTextField> rah = new ArrayList<newTextField>();
+    
+    public static String lastInsertedName = "";
     /**
      * Creates new form home_page
      */
     public addResident_page(DBManager user) {
         this.user = user;
         initComponents();
-        
+        myInitComponents();
         this.setVisible(true);
     }
 
@@ -37,39 +50,39 @@ public class addResident_page extends javax.swing.JFrame {
         panel_FirstPanel = new javax.swing.JPanel();
         label_BasicDetails = new javax.swing.JLabel();
         label_Surname = new javax.swing.JLabel();
-        textfield_Surname = new javax.swing.JTextField();
+        textfield_Surname = new newTextField("Surname");
         label_FirstName = new javax.swing.JLabel();
-        textfield_FirstName = new javax.swing.JTextField();
+        textfield_FirstName = new newTextField("FirstName");
         label_MiddleInitial = new javax.swing.JLabel();
-        textfield_MiddleInitial = new javax.swing.JTextField();
-        textfield_Suffix = new javax.swing.JTextField();
+        textfield_MiddleInitial = new newTextField("Initial");
+        textfield_Suffix = new newTextField("Suffix");
         label_Suffix = new javax.swing.JLabel();
         label_Sex = new javax.swing.JLabel();
         combobox_Sex = new javax.swing.JComboBox<>();
         label_Birthday = new javax.swing.JLabel();
-        textfield_BDAY_YEAR = new javax.swing.JTextField();
-        textfield_BDAY_MONTH = new javax.swing.JTextField();
-        textfield_BDAY_DAY = new javax.swing.JTextField();
+        textfield_BDAY_YEAR = new newTextField("Year");
+        textfield_BDAY_MONTH = new newTextField("Month");
+        textfield_BDAY_DAY = new newTextField("Day");
         label_Address = new javax.swing.JLabel();
         label_HouseNumber = new javax.swing.JLabel();
-        textfield_HouseNumber = new javax.swing.JTextField();
-        textfield_Barangay = new javax.swing.JTextField();
+        textfield_HouseNumber = new newTextField("House Number");
+        textfield_Barangay = new newTextField("Barangay");
         label_Barangay = new javax.swing.JLabel();
-        textfield_Municipality = new javax.swing.JTextField();
+        textfield_Municipality = new newTextField("Municipality");
         label_Municipality = new javax.swing.JLabel();
-        textfield_Region = new javax.swing.JTextField();
+        textfield_Region = new newTextField("Region");
         label_Region = new javax.swing.JLabel();
-        textfield_District = new javax.swing.JTextField();
-        textfield_Province = new javax.swing.JTextField();
+        textfield_District = new newTextField("District");
+        textfield_Province = new newTextField("Province");
         label_Province = new javax.swing.JLabel();
         label_District = new javax.swing.JLabel();
         label_Zone = new javax.swing.JLabel();
-        textfield_Zone = new javax.swing.JTextField();
+        textfield_Zone = new newTextField("Zone");
         panel_SecondPanel = new javax.swing.JPanel();
         label_PhoneNum = new javax.swing.JLabel();
-        textfield_PhoneNum = new javax.swing.JTextField();
+        textfield_PhoneNum = new newTextField("Phone Number");
         label_Email = new javax.swing.JLabel();
-        textfield_Email = new javax.swing.JTextField();
+        textfield_Email = new newTextField("Email");
         label_Demographic = new javax.swing.JLabel();
         label_CivilStats = new javax.swing.JLabel();
         combobox_CivilStat = new javax.swing.JComboBox<>();
@@ -95,7 +108,6 @@ public class addResident_page extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(90, 90, 90));
-        setMaximumSize(new java.awt.Dimension(1280, 720));
         setMinimumSize(new java.awt.Dimension(1280, 720));
         setResizable(false);
         setSize(new java.awt.Dimension(1280, 720));
@@ -250,7 +262,7 @@ public class addResident_page extends javax.swing.JFrame {
         label_Birthday.setText("Birthday");
 
         textfield_BDAY_YEAR.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        textfield_BDAY_YEAR.setText(" ");
+        textfield_BDAY_YEAR.setText("YYYY");
         textfield_BDAY_YEAR.setMaximumSize(new java.awt.Dimension(70, 35));
         textfield_BDAY_YEAR.setMinimumSize(new java.awt.Dimension(70, 35));
         textfield_BDAY_YEAR.setPreferredSize(new java.awt.Dimension(70, 35));
@@ -261,7 +273,7 @@ public class addResident_page extends javax.swing.JFrame {
         });
 
         textfield_BDAY_MONTH.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        textfield_BDAY_MONTH.setText(" ");
+        textfield_BDAY_MONTH.setText("MM");
         textfield_BDAY_MONTH.setMaximumSize(new java.awt.Dimension(50, 35));
         textfield_BDAY_MONTH.setMinimumSize(new java.awt.Dimension(50, 35));
         textfield_BDAY_MONTH.setPreferredSize(new java.awt.Dimension(50, 35));
@@ -272,7 +284,7 @@ public class addResident_page extends javax.swing.JFrame {
         });
 
         textfield_BDAY_DAY.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        textfield_BDAY_DAY.setText(" ");
+        textfield_BDAY_DAY.setText("DD");
         textfield_BDAY_DAY.setMaximumSize(new java.awt.Dimension(50, 35));
         textfield_BDAY_DAY.setMinimumSize(new java.awt.Dimension(50, 35));
         textfield_BDAY_DAY.setPreferredSize(new java.awt.Dimension(50, 35));
@@ -297,7 +309,7 @@ public class addResident_page extends javax.swing.JFrame {
         textfield_HouseNumber.setPreferredSize(new java.awt.Dimension(120, 35));
 
         textfield_Barangay.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        textfield_Barangay.setText(" ");
+        textfield_Barangay.setText("337");
         textfield_Barangay.setToolTipText("");
         textfield_Barangay.setMaximumSize(new java.awt.Dimension(120, 35));
         textfield_Barangay.setMinimumSize(new java.awt.Dimension(120, 35));
@@ -307,7 +319,7 @@ public class addResident_page extends javax.swing.JFrame {
         label_Barangay.setText("Barangay");
 
         textfield_Municipality.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        textfield_Municipality.setText(" ");
+        textfield_Municipality.setText("City Of Manila");
         textfield_Municipality.setMaximumSize(new java.awt.Dimension(120, 35));
         textfield_Municipality.setMinimumSize(new java.awt.Dimension(120, 35));
         textfield_Municipality.setPreferredSize(new java.awt.Dimension(120, 35));
@@ -315,24 +327,29 @@ public class addResident_page extends javax.swing.JFrame {
         label_Municipality.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         label_Municipality.setText("City/Municipality");
 
-        textfield_Region.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        textfield_Region.setText(" ");
+        textfield_Region.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        textfield_Region.setText("National Capital Region");
         textfield_Region.setToolTipText("");
         textfield_Region.setMaximumSize(new java.awt.Dimension(120, 35));
         textfield_Region.setMinimumSize(new java.awt.Dimension(120, 35));
         textfield_Region.setPreferredSize(new java.awt.Dimension(120, 35));
+        textfield_Region.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textfield_RegionActionPerformed(evt);
+            }
+        });
 
         label_Region.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         label_Region.setText("Region");
 
         textfield_District.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        textfield_District.setText(" ");
+        textfield_District.setText("3");
         textfield_District.setMaximumSize(new java.awt.Dimension(120, 35));
         textfield_District.setMinimumSize(new java.awt.Dimension(120, 35));
         textfield_District.setPreferredSize(new java.awt.Dimension(120, 35));
 
         textfield_Province.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        textfield_Province.setText(" ");
+        textfield_Province.setText("Metro Manila");
         textfield_Province.setMaximumSize(new java.awt.Dimension(120, 35));
         textfield_Province.setMinimumSize(new java.awt.Dimension(120, 35));
         textfield_Province.setPreferredSize(new java.awt.Dimension(120, 35));
@@ -349,7 +366,7 @@ public class addResident_page extends javax.swing.JFrame {
         label_Zone.setToolTipText("");
 
         textfield_Zone.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        textfield_Zone.setText(" ");
+        textfield_Zone.setText("34");
         textfield_Zone.setMaximumSize(new java.awt.Dimension(120, 35));
         textfield_Zone.setMinimumSize(new java.awt.Dimension(120, 35));
         textfield_Zone.setPreferredSize(new java.awt.Dimension(120, 35));
@@ -491,7 +508,6 @@ public class addResident_page extends javax.swing.JFrame {
         label_PhoneNum.setText("Phone Number");
 
         textfield_PhoneNum.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        textfield_PhoneNum.setText(" ");
         textfield_PhoneNum.setMaximumSize(new java.awt.Dimension(300, 35));
         textfield_PhoneNum.setMinimumSize(new java.awt.Dimension(300, 35));
         textfield_PhoneNum.setPreferredSize(new java.awt.Dimension(300, 35));
@@ -633,12 +649,12 @@ public class addResident_page extends javax.swing.JFrame {
                             .addComponent(button_Cancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(button_RegisterResident, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(panel_SecondPanelLayout.createSequentialGroup()
-                                .addComponent(radiobutton_YES_NTNLvoter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(radiobutton_YES_NTNLvoter, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(radiobutton_NO_NTNLvoter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(label_NTNLvoter, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(panel_SecondPanelLayout.createSequentialGroup()
-                                .addComponent(radiobutton_YES_SKvoter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(radiobutton_YES_SKvoter, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(radiobutton_NO_SKvoter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(label_SKvoter, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -770,7 +786,11 @@ public class addResident_page extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    private void myInitComponents() {
+        System.out.println(textfield_Surname.getTfName());
+    }
+    
     private void label_HomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_HomeMouseClicked
 
     }//GEN-LAST:event_label_HomeMouseClicked
@@ -837,6 +857,105 @@ public class addResident_page extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_button_RegisterResidentActionPerformed
 
+    private void textfield_RegionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textfield_RegionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textfield_RegionActionPerformed
+    
+    public static int ageCalculator(String year, String month, String day) {
+        LocalDate dob = LocalDate.parse(year + "-" + month + "-" + day);
+        return Period.between(dob, LocalDate.now()).getYears();
+    }
+
+    public static String checkIfMissing(newTextField textfield) {
+        if (textfield.getText().equals("")) {
+            rah.add(textfield);
+            return null;
+        }
+        else {
+            return textfield.getText().trim();
+        }
+    }
+
+    class MyIntFilter extends DocumentFilter {
+            @Override
+            public void insertString(FilterBypass fb, int offset, String string,
+                javax.swing.text.AttributeSet attr) throws BadLocationException {
+
+                Document doc = fb.getDocument();
+                StringBuilder sb = new StringBuilder();
+                sb.append(doc.getText(0, doc.getLength()));
+                sb.insert(offset, string);
+
+                if (test(sb.toString())) {
+                    super.insertString(fb, offset, string, attr);
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Error 1");
+                }
+            }
+
+            private boolean test(String text) {
+                    try {
+                            Integer.parseInt(text);
+                            return true;
+                    } catch (NumberFormatException e) {
+                            return false;
+                    }
+            }
+
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text,
+                            javax.swing.text.AttributeSet attrs) throws BadLocationException {
+
+                    Document doc = fb.getDocument();
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(doc.getText(0, doc.getLength()));
+                    sb.replace(offset, offset + length, text);
+
+                    if (test(sb.toString())) {
+                            super.replace(fb, offset, length, text, attrs);
+                    } else {
+                            JOptionPane.showMessageDialog(rootPane, "Error 2");
+                    }
+
+            }
+
+//		@Override
+//		public void remove(FilterBypass fb, int offset, int length)
+//				throws BadLocationException {
+//			Document doc = fb.getDocument();
+//			StringBuilder sb = new StringBuilder();
+//			sb.append(doc.getText(0, doc.getLength()));
+//			sb.delete(offset, offset + length);
+//
+//			if (test(sb.toString())) {
+//				super.remove(fb, offset, length);
+//			} else {
+//				JOptionPane.showMessageDialog(frame, "ERROR3");
+//			}
+//
+//		}
+    }
+
+    public static String demoIdPicker(JComboBox comboBox) {
+            for (int i = 0; i < comboBox.getItemCount(); i++) {
+                    if (comboBox.getSelectedIndex() == i) return String.valueOf(i);
+            }
+            return null;
+    }
+
+    @SuppressWarnings("serial")
+    public class newTextField extends JTextField {
+        public String tfName;
+
+        public newTextField(String tfName) {
+            this.tfName = tfName;
+        }
+        
+        public String getTfName() {
+            return this.tfName;
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_Cancel;
     private javax.swing.JButton button_RegisterResident;
@@ -885,21 +1004,21 @@ public class addResident_page extends javax.swing.JFrame {
     private javax.swing.JRadioButton radiobutton_NO_SKvoter;
     private javax.swing.JRadioButton radiobutton_YES_NTNLvoter;
     private javax.swing.JRadioButton radiobutton_YES_SKvoter;
-    private javax.swing.JTextField textfield_BDAY_DAY;
-    private javax.swing.JTextField textfield_BDAY_MONTH;
-    private javax.swing.JTextField textfield_BDAY_YEAR;
-    private javax.swing.JTextField textfield_Barangay;
-    private javax.swing.JTextField textfield_District;
-    private javax.swing.JTextField textfield_Email;
-    private javax.swing.JTextField textfield_FirstName;
-    private javax.swing.JTextField textfield_HouseNumber;
-    private javax.swing.JTextField textfield_MiddleInitial;
-    private javax.swing.JTextField textfield_Municipality;
-    private javax.swing.JTextField textfield_PhoneNum;
-    private javax.swing.JTextField textfield_Province;
-    private javax.swing.JTextField textfield_Region;
-    private javax.swing.JTextField textfield_Suffix;
-    private javax.swing.JTextField textfield_Surname;
-    private javax.swing.JTextField textfield_Zone;
+    private newTextField textfield_BDAY_DAY;
+    private newTextField textfield_BDAY_MONTH;
+    private newTextField textfield_BDAY_YEAR;
+    private newTextField textfield_Barangay;
+    private newTextField textfield_District;
+    private newTextField textfield_Email;
+    private newTextField textfield_FirstName;
+    private newTextField textfield_HouseNumber;
+    private newTextField textfield_MiddleInitial;
+    private newTextField textfield_Municipality;
+    private newTextField textfield_PhoneNum;
+    private newTextField textfield_Province;
+    private newTextField textfield_Region;
+    private newTextField textfield_Suffix;
+    private newTextField textfield_Surname;
+    private newTextField textfield_Zone;
     // End of variables declaration//GEN-END:variables
 }

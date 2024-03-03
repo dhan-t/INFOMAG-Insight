@@ -4,6 +4,9 @@
  */
 package com.mycompany.insight_flatlaf_revamp;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -17,6 +20,7 @@ public class basicTable_page extends javax.swing.JFrame {
     private final DBManager user;
     private boolean isBasic = true;
     private JTable table_AdvTable = null;
+    private int rows = 0;
     /**
      * Creates new form home_page
      */
@@ -54,7 +58,9 @@ public class basicTable_page extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(90, 90, 90));
+        setMaximumSize(new java.awt.Dimension(1280, 720));
         setMinimumSize(new java.awt.Dimension(1280, 720));
+        setPreferredSize(new java.awt.Dimension(1280, 720));
         setResizable(false);
         setSize(new java.awt.Dimension(1280, 720));
         addMouseListener(new java.awt.event.MouseAdapter() {
@@ -101,6 +107,11 @@ public class basicTable_page extends javax.swing.JFrame {
         label_BasicTable.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         label_BasicTable.setText("Basic Table");
         label_BasicTable.setToolTipText("");
+        label_BasicTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                label_BasicTableMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout panel_sidePanelLayout = new javax.swing.GroupLayout(panel_sidePanel);
         panel_sidePanel.setLayout(panel_sidePanelLayout);
@@ -167,6 +178,8 @@ public class basicTable_page extends javax.swing.JFrame {
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
+        scrollpane_MainScroll.setMinimumSize(null);
+
         table_BasicTable.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         table_BasicTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -220,6 +233,9 @@ public class basicTable_page extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        table_BasicTable.setMaximumSize(new java.awt.Dimension(1280, 720));
+        table_BasicTable.setMinimumSize(new java.awt.Dimension(950, 1050));
+        table_BasicTable.setPreferredSize(new java.awt.Dimension(950, 1050));
         table_BasicTable.setRowHeight(35);
         table_BasicTable.setShowGrid(true);
         table_BasicTable.getTableHeader().setResizingAllowed(false);
@@ -301,8 +317,8 @@ public class basicTable_page extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(textfield_SearchBar43, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(button_SearchRes43, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+                .addComponent(button_SearchRes43, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 9, Short.MAX_VALUE))
         );
         panel_SearchBar43Layout.setVerticalGroup(
             panel_SearchBar43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -326,14 +342,14 @@ public class basicTable_page extends javax.swing.JFrame {
                         .addComponent(panel_BrgyName, javax.swing.GroupLayout.PREFERRED_SIZE, 603, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(panel_SearchBar43, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(button_EditRes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(button_RemoveRes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(panel_SearchBar43, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(463, 463, 463))
-                    .addComponent(scrollpane_MainScroll))
-                .addContainerGap())
+                                .addGap(39, 39, 39)
+                                .addComponent(button_RemoveRes, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(scrollpane_MainScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 1012, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -348,12 +364,12 @@ public class basicTable_page extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(7, 7, 7)
                                 .addComponent(panel_SearchBar43, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(button_EditRes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(button_RemoveRes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(15, 15, 15)
-                        .addComponent(scrollpane_MainScroll)))
+                                    .addComponent(button_RemoveRes, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(9, 9, 9)
+                        .addComponent(scrollpane_MainScroll, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -364,6 +380,7 @@ public class basicTable_page extends javax.swing.JFrame {
         if (user.getClearanceLvl() == 1) {
             button_EditRes.setVisible(false);
             button_RemoveRes.setVisible(false);
+            label_AddResident.setVisible(false);
         }
         
         // adding the Advanced table
@@ -446,26 +463,29 @@ public class basicTable_page extends javax.swing.JFrame {
             table_AdvTable.getColumnModel().getColumn(8).setResizable(false);
             table_AdvTable.getColumnModel().getColumn(8).setPreferredWidth(90);
         }
-        table_AdvTable.setVisible(false);
+        table_AdvTable.setVisible(true);
     }
     
     private void label_HomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_HomeMouseClicked
-        
+    this.dispose();
+    new home_page(user);
     }//GEN-LAST:event_label_HomeMouseClicked
 
     private void label_AddResidentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_AddResidentMouseClicked
-     this.dispose();
-      addResident_page addResident_page = new addResident_page(user);        // TODO add your handling code here:
+    this.dispose();
+    new addResident_page(user);
     }//GEN-LAST:event_label_AddResidentMouseClicked
 
     private void label_AdvTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_AdvTableMouseClicked
-    this.dispose();
-      advTable_page advTable_page = new advTable_page(user);        // TODO add your handling code here:
+        if (isBasic) {
+            isBasic = false;
+            scrollpane_MainScroll.setViewportView(table_AdvTable); 
+        }
     }//GEN-LAST:event_label_AdvTableMouseClicked
 
     private void button_EditResMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_EditResMouseClicked
     this.dispose();
-      editResident_page editResident_page = new editResident_page(user);       // TODO add your handling code here:
+    new editResident_page(user);
     }//GEN-LAST:event_button_EditResMouseClicked
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
@@ -478,6 +498,7 @@ public class basicTable_page extends javax.swing.JFrame {
             DefaultTableModel tblModel = (DefaultTableModel)table_BasicTable.getModel();
             for (int row = 0; row < tblModel.getRowCount(); row++) {
                 if ((boolean)tblModel.getValueAt(row, 0)) {
+                    System.out.println("remove basic");
                     Object checker =  table_BasicTable.getValueAt(row, 1);
                     
                     if (checker == null) {
@@ -491,13 +512,14 @@ public class basicTable_page extends javax.swing.JFrame {
         else {
             DefaultTableModel adTblModel = (DefaultTableModel)table_AdvTable.getModel();
             for (int row = 0; row < adTblModel.getRowCount(); row++) {
-                    Object checker =  table_AdvTable.getValueAt(row, 1);
-                    
-                    if (checker == null) {
-                        JOptionPane.showMessageDialog(rootPane, "Please select a valid row to delete");
-                        return;
-                    }
-                    idsToRemove.add((String)checker);
+                System.out.println("remove advanced");
+                Object checker =  table_AdvTable.getValueAt(row, 1);
+
+                if (checker == null) {
+                    JOptionPane.showMessageDialog(rootPane, "Please select a valid row to delete");
+                    return;
+                }
+                idsToRemove.add((String)checker);
             }  
         }
         
@@ -515,9 +537,7 @@ public class basicTable_page extends javax.swing.JFrame {
     }//GEN-LAST:event_button_RemoveResActionPerformed
 
     private void textfield_SearchBar43FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textfield_SearchBar43FocusGained
-        textfield_SearchBar.setText("");
-
-        // TODO add your handling code here:
+        textfield_SearchBar43.setText("");
     }//GEN-LAST:event_textfield_SearchBar43FocusGained
 
     private void textfield_SearchBar43ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textfield_SearchBar43ActionPerformed
@@ -525,162 +545,93 @@ public class basicTable_page extends javax.swing.JFrame {
     }//GEN-LAST:event_textfield_SearchBar43ActionPerformed
 
     private void button_SearchRes43ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_SearchRes43ActionPerformed
-        // TODO add your handling code here:
+        try {
+            String searchText = textfield_SearchBar43.getText();
+
+            boolean isIdToSearch = false;
+            if (searchText.contains("2024")) isIdToSearch = true;
+
+            String sqlFetch = "";  
+            Connection conn = user.connect();
+            PreparedStatement ps = null;
+            
+            if (isIdToSearch) {
+                sqlFetch = "SELECT * FROM `resident` INNER JOIN address ON resident.Address_ID=address.Address_ID "
+                        + "INNER JOIN demographic ON resident.Demo_ID=demographic.Demo_ID WHERE res_id=?";
+                ps = conn.prepareStatement(sqlFetch);
+                ps.setString(1, searchText);
+            }
+            else {
+                sqlFetch = "SELECT * FROM `resident` INNER JOIN address ON resident.Address_ID=address.Address_ID "
+                        + "INNER JOIN demographic ON resident.Demo_ID=demographic.Demo_ID WHERE First_Name=? OR Last_Name=?";
+                ps = conn.prepareStatement(sqlFetch);
+                ps.setString(1, searchText);
+                ps.setString(2, searchText);
+            }
+            
+            ResultSet rs =  ps.executeQuery();
+            
+            DefaultTableModel tblModel = (DefaultTableModel)table_BasicTable.getModel();
+            DefaultTableModel adTblModel = (DefaultTableModel)table_AdvTable.getModel();
+            
+            int rowCounter = 0;
+            for (int i = 0; i <= rows; i++) {
+                tblModel.removeRow(i);
+                adTblModel.removeRow(i);
+            }
+            while (rs.next()) {
+                String iD = rs.getString("res_id");
+                String surname = rs.getString("last_Name");
+                String firstName = rs.getString("first_Name");
+                String initial = rs.getString("middle_initial");
+                String sex = rs.getString("sex");
+                String number = rs.getString("contact_num");
+                String address = rs.getString("region") + " " + rs.getString("municipality") + " " + rs.getString("barangay");
+
+                String birthDate = rs.getString("birthdate");
+                String youthClass = rs.getString("Youth_Class");
+                String employed = rs.getString("work_stat");
+                String skVoter = rs.getString("reg_SKVoter");
+                String natVoter = rs.getString("reg_natVoter");
+
+
+                Object tblData[] = {false, iD, surname, firstName, initial, sex, number, address};
+                Object adtblData[] = {false, iD, surname + ", " + firstName + " " + initial, birthDate, youthClass, employed, skVoter, natVoter, address};
+                System.out.println("test");
+
+                tblModel.insertRow(rowCounter, tblData);
+                adTblModel.insertRow(rowCounter, adtblData);
+                rowCounter++;
+            }
+            System.out.println("");
+            rows = rowCounter;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e);
+        }
     }//GEN-LAST:event_button_SearchRes43ActionPerformed
+
+    private void label_BasicTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_BasicTableMouseClicked
+        if (!isBasic) {
+            isBasic = true;
+            scrollpane_MainScroll.setViewportView(table_BasicTable); 
+        }
+    }//GEN-LAST:event_label_BasicTableMouseClicked
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_EditRes;
     private javax.swing.JButton button_RemoveRes;
-    private javax.swing.JButton button_SearchRes;
-    private javax.swing.JButton button_SearchRes1;
-    private javax.swing.JButton button_SearchRes10;
-    private javax.swing.JButton button_SearchRes11;
-    private javax.swing.JButton button_SearchRes12;
-    private javax.swing.JButton button_SearchRes13;
-    private javax.swing.JButton button_SearchRes14;
-    private javax.swing.JButton button_SearchRes15;
-    private javax.swing.JButton button_SearchRes16;
-    private javax.swing.JButton button_SearchRes17;
-    private javax.swing.JButton button_SearchRes18;
-    private javax.swing.JButton button_SearchRes19;
-    private javax.swing.JButton button_SearchRes2;
-    private javax.swing.JButton button_SearchRes20;
-    private javax.swing.JButton button_SearchRes21;
-    private javax.swing.JButton button_SearchRes22;
-    private javax.swing.JButton button_SearchRes23;
-    private javax.swing.JButton button_SearchRes24;
-    private javax.swing.JButton button_SearchRes25;
-    private javax.swing.JButton button_SearchRes26;
-    private javax.swing.JButton button_SearchRes27;
-    private javax.swing.JButton button_SearchRes28;
-    private javax.swing.JButton button_SearchRes29;
-    private javax.swing.JButton button_SearchRes3;
-    private javax.swing.JButton button_SearchRes30;
-    private javax.swing.JButton button_SearchRes31;
-    private javax.swing.JButton button_SearchRes32;
-    private javax.swing.JButton button_SearchRes33;
-    private javax.swing.JButton button_SearchRes34;
-    private javax.swing.JButton button_SearchRes35;
-    private javax.swing.JButton button_SearchRes36;
-    private javax.swing.JButton button_SearchRes37;
-    private javax.swing.JButton button_SearchRes38;
-    private javax.swing.JButton button_SearchRes39;
-    private javax.swing.JButton button_SearchRes4;
-    private javax.swing.JButton button_SearchRes40;
-    private javax.swing.JButton button_SearchRes41;
-    private javax.swing.JButton button_SearchRes42;
     private javax.swing.JButton button_SearchRes43;
-    private javax.swing.JButton button_SearchRes5;
-    private javax.swing.JButton button_SearchRes6;
-    private javax.swing.JButton button_SearchRes7;
-    private javax.swing.JButton button_SearchRes8;
-    private javax.swing.JButton button_SearchRes9;
     private javax.swing.JLabel label_AddResident;
     private javax.swing.JLabel label_AdvTable;
     private javax.swing.JLabel label_BasicTable;
     private javax.swing.JLabel label_BrgyName;
     private javax.swing.JLabel label_BrgyName1;
-    private javax.swing.JLabel label_BrgyName2;
-    private javax.swing.JLabel label_BrgyName3;
-    private javax.swing.JLabel label_BrgyName4;
-    private javax.swing.JLabel label_BrgyName5;
-    private javax.swing.JLabel label_BrgyName6;
-    private javax.swing.JLabel label_BrgyName7;
     private javax.swing.JLabel label_Home;
     private javax.swing.JLabel label_Insight;
     private javax.swing.JPanel panel_BrgyName;
-    private javax.swing.JPanel panel_BrgyName1;
-    private javax.swing.JPanel panel_BrgyName2;
-    private javax.swing.JPanel panel_BrgyName3;
-    private javax.swing.JPanel panel_SearchBar;
-    private javax.swing.JPanel panel_SearchBar1;
-    private javax.swing.JPanel panel_SearchBar10;
-    private javax.swing.JPanel panel_SearchBar11;
-    private javax.swing.JPanel panel_SearchBar12;
-    private javax.swing.JPanel panel_SearchBar13;
-    private javax.swing.JPanel panel_SearchBar14;
-    private javax.swing.JPanel panel_SearchBar15;
-    private javax.swing.JPanel panel_SearchBar16;
-    private javax.swing.JPanel panel_SearchBar17;
-    private javax.swing.JPanel panel_SearchBar18;
-    private javax.swing.JPanel panel_SearchBar19;
-    private javax.swing.JPanel panel_SearchBar2;
-    private javax.swing.JPanel panel_SearchBar20;
-    private javax.swing.JPanel panel_SearchBar21;
-    private javax.swing.JPanel panel_SearchBar22;
-    private javax.swing.JPanel panel_SearchBar23;
-    private javax.swing.JPanel panel_SearchBar24;
-    private javax.swing.JPanel panel_SearchBar25;
-    private javax.swing.JPanel panel_SearchBar26;
-    private javax.swing.JPanel panel_SearchBar27;
-    private javax.swing.JPanel panel_SearchBar28;
-    private javax.swing.JPanel panel_SearchBar29;
-    private javax.swing.JPanel panel_SearchBar3;
-    private javax.swing.JPanel panel_SearchBar30;
-    private javax.swing.JPanel panel_SearchBar31;
-    private javax.swing.JPanel panel_SearchBar32;
-    private javax.swing.JPanel panel_SearchBar33;
-    private javax.swing.JPanel panel_SearchBar34;
-    private javax.swing.JPanel panel_SearchBar35;
-    private javax.swing.JPanel panel_SearchBar36;
-    private javax.swing.JPanel panel_SearchBar37;
-    private javax.swing.JPanel panel_SearchBar38;
-    private javax.swing.JPanel panel_SearchBar39;
-    private javax.swing.JPanel panel_SearchBar4;
-    private javax.swing.JPanel panel_SearchBar40;
-    private javax.swing.JPanel panel_SearchBar41;
-    private javax.swing.JPanel panel_SearchBar42;
     private javax.swing.JPanel panel_SearchBar43;
-    private javax.swing.JPanel panel_SearchBar5;
-    private javax.swing.JPanel panel_SearchBar6;
-    private javax.swing.JPanel panel_SearchBar7;
-    private javax.swing.JPanel panel_SearchBar8;
-    private javax.swing.JPanel panel_SearchBar9;
     private javax.swing.JScrollPane scrollpane_MainScroll;
     private javax.swing.JTable table_BasicTable;
-    private javax.swing.JTextField textfield_SearchBar;
-    private javax.swing.JTextField textfield_SearchBar1;
-    private javax.swing.JTextField textfield_SearchBar10;
-    private javax.swing.JTextField textfield_SearchBar11;
-    private javax.swing.JTextField textfield_SearchBar12;
-    private javax.swing.JTextField textfield_SearchBar13;
-    private javax.swing.JTextField textfield_SearchBar14;
-    private javax.swing.JTextField textfield_SearchBar15;
-    private javax.swing.JTextField textfield_SearchBar16;
-    private javax.swing.JTextField textfield_SearchBar17;
-    private javax.swing.JTextField textfield_SearchBar18;
-    private javax.swing.JTextField textfield_SearchBar19;
-    private javax.swing.JTextField textfield_SearchBar2;
-    private javax.swing.JTextField textfield_SearchBar20;
-    private javax.swing.JTextField textfield_SearchBar21;
-    private javax.swing.JTextField textfield_SearchBar22;
-    private javax.swing.JTextField textfield_SearchBar23;
-    private javax.swing.JTextField textfield_SearchBar24;
-    private javax.swing.JTextField textfield_SearchBar25;
-    private javax.swing.JTextField textfield_SearchBar26;
-    private javax.swing.JTextField textfield_SearchBar27;
-    private javax.swing.JTextField textfield_SearchBar28;
-    private javax.swing.JTextField textfield_SearchBar29;
-    private javax.swing.JTextField textfield_SearchBar3;
-    private javax.swing.JTextField textfield_SearchBar30;
-    private javax.swing.JTextField textfield_SearchBar31;
-    private javax.swing.JTextField textfield_SearchBar32;
-    private javax.swing.JTextField textfield_SearchBar33;
-    private javax.swing.JTextField textfield_SearchBar34;
-    private javax.swing.JTextField textfield_SearchBar35;
-    private javax.swing.JTextField textfield_SearchBar36;
-    private javax.swing.JTextField textfield_SearchBar37;
-    private javax.swing.JTextField textfield_SearchBar38;
-    private javax.swing.JTextField textfield_SearchBar39;
-    private javax.swing.JTextField textfield_SearchBar4;
-    private javax.swing.JTextField textfield_SearchBar40;
-    private javax.swing.JTextField textfield_SearchBar41;
-    private javax.swing.JTextField textfield_SearchBar42;
     private javax.swing.JTextField textfield_SearchBar43;
-    private javax.swing.JTextField textfield_SearchBar5;
-    private javax.swing.JTextField textfield_SearchBar6;
-    private javax.swing.JTextField textfield_SearchBar7;
-    private javax.swing.JTextField textfield_SearchBar8;
-    private javax.swing.JTextField textfield_SearchBar9;
     // End of variables declaration//GEN-END:variables
 }
