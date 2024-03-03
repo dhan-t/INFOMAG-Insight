@@ -25,7 +25,7 @@ public class advTable_page extends javax.swing.JFrame {
 
      */
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
         javax.swing.JPanel panel_sidePanel = new javax.swing.JPanel();
@@ -41,6 +41,9 @@ public class advTable_page extends javax.swing.JFrame {
         table_AdvTable = new javax.swing.JTable();
         button_EditRes = new javax.swing.JButton();
         button_RemoveRes = new javax.swing.JButton();
+        panel_SearchBar = new javax.swing.JPanel();
+        textfield_SearchBar = new javax.swing.JTextField();
+        button_SearchRes = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(90, 90, 90));
@@ -260,6 +263,50 @@ public class advTable_page extends javax.swing.JFrame {
         button_RemoveRes.setMinimumSize(new java.awt.Dimension(180, 35));
         button_RemoveRes.setPreferredSize(new java.awt.Dimension(180, 35));
 
+        textfield_SearchBar.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        textfield_SearchBar.setForeground(new java.awt.Color(102, 102, 102));
+        textfield_SearchBar.setText("Search by ID, First name, or Surname");
+        textfield_SearchBar.setToolTipText("");
+        textfield_SearchBar.setPreferredSize(new java.awt.Dimension(200, 40));
+        textfield_SearchBar.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                textfield_SearchBarFocusGained(evt);
+            }
+        });
+        textfield_SearchBar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textfield_SearchBarActionPerformed(evt);
+            }
+        });
+
+        button_SearchRes.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        button_SearchRes.setText("Search Resident");
+        button_SearchRes.setPreferredSize(new java.awt.Dimension(150, 40));
+        button_SearchRes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_SearchResActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panel_SearchBarLayout = new javax.swing.GroupLayout(panel_SearchBar);
+        panel_SearchBar.setLayout(panel_SearchBarLayout);
+        panel_SearchBarLayout.setHorizontalGroup(
+            panel_SearchBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_SearchBarLayout.createSequentialGroup()
+                .addComponent(textfield_SearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(button_SearchRes, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
+        );
+        panel_SearchBarLayout.setVerticalGroup(
+            panel_SearchBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_SearchBarLayout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addGroup(panel_SearchBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(button_SearchRes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(textfield_SearchBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, 0))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -270,11 +317,14 @@ public class advTable_page extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(panel_BrgyName, javax.swing.GroupLayout.PREFERRED_SIZE, 603, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(button_EditRes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(15, 15, 15)
-                        .addComponent(button_RemoveRes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(35, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(button_EditRes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)
+                                .addComponent(button_RemoveRes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(panel_SearchBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(76, Short.MAX_VALUE))
                     .addComponent(scrollpane_MainScroll)))
         );
         layout.setVerticalGroup(
@@ -286,10 +336,13 @@ public class advTable_page extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(button_EditRes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(button_RemoveRes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(panel_SearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(button_EditRes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(button_RemoveRes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(panel_BrgyName, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(15, 15, 15)
                         .addComponent(scrollpane_MainScroll)))
@@ -297,39 +350,54 @@ public class advTable_page extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>                        
 
-    private void label_HomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_HomeMouseClicked
+    private void label_HomeMouseClicked(java.awt.event.MouseEvent evt) {                                        
 
-    }//GEN-LAST:event_label_HomeMouseClicked
+    }                                       
 
-    private void label_AddResidentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_AddResidentMouseClicked
+    private void label_AddResidentMouseClicked(java.awt.event.MouseEvent evt) {                                               
     this.dispose();
       addResident_page addResident_page = new addResident_page(user);         // TODO add your handling code here:
-    }//GEN-LAST:event_label_AddResidentMouseClicked
+    }                                              
 
-    private void label_BasicTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_BasicTableMouseClicked
+    private void label_BasicTableMouseClicked(java.awt.event.MouseEvent evt) {                                              
     this.dispose();
       basicTable_page basicTable_page = new basicTable_page(user);       // TODO add your handling code here:
-    }//GEN-LAST:event_label_BasicTableMouseClicked
+    }                                             
 
-    private void label_AdvTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_AdvTableMouseClicked
+    private void label_AdvTableMouseClicked(java.awt.event.MouseEvent evt) {                                            
     this.dispose();
       advTable_page advTable_page = new advTable_page(user);        // TODO add your handling code here:
-    }//GEN-LAST:event_label_AdvTableMouseClicked
+    }                                           
 
-    private void button_EditResActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_EditResActionPerformed
+    private void button_EditResActionPerformed(java.awt.event.ActionEvent evt) {                                               
         // TODO add your handling code here:
-    }//GEN-LAST:event_button_EditResActionPerformed
+    }                                              
 
-    private void button_EditResMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_EditResMouseClicked
+    private void button_EditResMouseClicked(java.awt.event.MouseEvent evt) {                                            
     this.dispose();
       editResident_page editResident_page = new editResident_page(user);          // TODO add your handling code here:
-    }//GEN-LAST:event_button_EditResMouseClicked
+    }                                           
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private void textfield_SearchBarActionPerformed(java.awt.event.ActionEvent evt) {                                                    
+        // TODO add your handling code here:
+    }                                                   
+
+    private void button_SearchResActionPerformed(java.awt.event.ActionEvent evt) {                                                 
+        // TODO add your handling code here:
+    }                                                
+
+    private void textfield_SearchBarFocusGained(java.awt.event.FocusEvent evt) {                                                
+    textfield_SearchBar.setText("");    
+        
+// TODO add your handling code here:
+    }                                               
+
+    // Variables declaration - do not modify                     
     private javax.swing.JButton button_EditRes;
     private javax.swing.JButton button_RemoveRes;
+    private javax.swing.JButton button_SearchRes;
     private javax.swing.JLabel label_AddResident;
     private javax.swing.JLabel label_AdvTable;
     private javax.swing.JLabel label_BasicTable;
@@ -338,7 +406,9 @@ public class advTable_page extends javax.swing.JFrame {
     private javax.swing.JLabel label_Home;
     private javax.swing.JLabel label_Insight;
     private javax.swing.JPanel panel_BrgyName;
+    private javax.swing.JPanel panel_SearchBar;
     private javax.swing.JScrollPane scrollpane_MainScroll;
     private javax.swing.JTable table_AdvTable;
-    // End of variables declaration//GEN-END:variables
+    private javax.swing.JTextField textfield_SearchBar;
+    // End of variables declaration                   
 }
