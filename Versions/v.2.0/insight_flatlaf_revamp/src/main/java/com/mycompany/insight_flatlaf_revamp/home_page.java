@@ -4,21 +4,49 @@
  */
 package com.mycompany.insight_flatlaf_revamp;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.AttributedCharacterIterator;
+import java.text.AttributedString;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
+import java.util.Map;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+
 /**
  *
  * @author Dhan Michea
  */
     public class home_page extends javax.swing.JFrame {
-
+    private final DBManager user;
+    
+    Font font = new Font("helvetica", Font.PLAIN, 12);
+    Map attributes = font.getAttributes();
+    Font newFont;
     /**
      * Creates new form home_page
+     * @param user
      */
-    public home_page() {
+    public home_page(DBManager user) {
+        attributes.put(java.awt.font.TextAttribute.STRIKETHROUGH, java.awt.font.TextAttribute.STRIKETHROUGH_ON);
+        this.newFont = new Font(attributes);
+        this.user = user;
         initComponents();
-        
+        myInitComponents();
         this.setVisible(true);
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
 
@@ -67,7 +95,6 @@ package com.mycompany.insight_flatlaf_revamp;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(javax.swing.UIManager.getDefaults().getColor("Button.borderColor"));
-        setMaximumSize(new java.awt.Dimension(1280, 720));
         setMinimumSize(new java.awt.Dimension(1280, 720));
         setResizable(false);
         setSize(new java.awt.Dimension(1280, 720));
@@ -76,7 +103,6 @@ package com.mycompany.insight_flatlaf_revamp;
         panel_sidePanel.setToolTipText("");
         panel_sidePanel.setMaximumSize(new java.awt.Dimension(240, 720));
         panel_sidePanel.setMinimumSize(new java.awt.Dimension(240, 720));
-        panel_sidePanel.setPreferredSize(new java.awt.Dimension(240, 720));
 
         label_Insight.setFont(new java.awt.Font("Quando", 1, 24)); // NOI18N
         label_Insight.setForeground(new java.awt.Color(242, 242, 242));
@@ -119,28 +145,29 @@ package com.mycompany.insight_flatlaf_revamp;
             panel_sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(label_Insight, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_sidePanelLayout.createSequentialGroup()
-                .addContainerGap(75, Short.MAX_VALUE)
-                .addGroup(panel_sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(label_BasicTable, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(label_AddResident, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(label_Home, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(label_AdvTable, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
-                .addGap(15, 15, 15))
+                .addContainerGap(77, Short.MAX_VALUE)
+                .addGroup(panel_sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panel_sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(label_AdvTable, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(label_AddResident, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(label_Home, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(label_BasicTable, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30))
         );
         panel_sidePanelLayout.setVerticalGroup(
             panel_sidePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_sidePanelLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(label_Insight, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addGap(29, 29, 29)
                 .addComponent(label_Home, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addComponent(label_BasicTable, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addComponent(label_AdvTable, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(label_AddResident, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(label_BasicTable, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(label_AdvTable, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 365, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         panel_BrgyName.setBackground(javax.swing.UIManager.getDefaults().getColor("Actions.Blue"));
@@ -251,6 +278,7 @@ package com.mycompany.insight_flatlaf_revamp;
 
         label_PercentLeft.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         label_PercentLeft.setForeground(java.awt.SystemColor.text);
+        label_PercentLeft.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         label_PercentLeft.setText("%XX");
 
         label_Started.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
@@ -275,7 +303,7 @@ package com.mycompany.insight_flatlaf_revamp;
                         .addGroup(panel_TermRemainingLayout.createSequentialGroup()
                             .addComponent(label_Ending)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(label_PercentLeft, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(label_PercentLeft, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(28, Short.MAX_VALUE))
         );
         panel_TermRemainingLayout.setVerticalGroup(
@@ -462,7 +490,7 @@ package com.mycompany.insight_flatlaf_revamp;
                     .addComponent(panel_RegisteredRes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(10, 10, 10)
                 .addComponent(panel_MonthlyDashBoard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -473,60 +501,169 @@ package com.mycompany.insight_flatlaf_revamp;
                 .addComponent(panel_sidePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                        .addGap(31, 31, 31)
                         .addComponent(panel_BrgyName, javax.swing.GroupLayout.PREFERRED_SIZE, 603, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
+                        .addGap(28, 28, 28)
                         .addComponent(panel_DashboardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 870, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(155, Short.MAX_VALUE))
+                .addContainerGap(125, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(panel_sidePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(panel_BrgyName, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15)
                 .addComponent(panel_DashboardPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)
                 .addGap(37, 37, 37))
+            .addComponent(panel_sidePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    private void myInitComponents() {
+        if (user.getClearanceLvl() == 1) 
+            label_AddResident.setVisible(false);
 
+        try {
+        String sqlResCount = "SELECT count(res_id) AS resCount FROM `resident`";
+        Connection conn = user.connect();
+        PreparedStatement ps = conn.prepareStatement(sqlResCount);
+        ResultSet rs = ps.executeQuery();
+        int resCount = 0;
+        if (rs.next()) 
+            resCount = rs.getInt("resCount");
+        
+        label_NumofRes.setText(String.valueOf(resCount));
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e);
+        }
+        
+        // for the Remaining term
+        label_Started.setText("2023-09-20"); // starting term
+        label_Ending.setText("2025-09-20"); // ending term
+        LocalDate startDate = LocalDate.parse("2023-09-20"); //parsing the starting term as a LocalDate
+        long days = ChronoUnit.DAYS.between(startDate, LocalDate.now()); // num of days
+        
+        final int maxDays = 730;
+        jProgressBar1.setMinimum(0);
+        jProgressBar1.setMaximum(maxDays);
+        int intDays = (int)days;
+        
+        jProgressBar1.setValue(intDays); 
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+        double percentRemaining = (double)intDays/(double)maxDays;
+        
+        String percentage = df.format(percentRemaining*100); // Setting the progress bar
+        label_PercentLeft.setText(percentage + "%");
+        
+        // radiobutton initialization
+        label_ActivitiesForMonth.setText("Activities for March");
+        radiobutton_Activity_First.setText("02 - Meeting the residents");
+        radiobutton_Activity_Second.setText("08 - Charity Campaign");
+        radiobutton_Activity_Third.setText("17 - Cleaning the house");
+        radiobutton_Activity_Fourth.setText("29 - Monthly Meeting");
+        
+        // the date
+        label_MonthName.setText("March");
+        String[] sArr = {"02", "08", "17", "29"};
+//        DefaultTableModel adTblModel = (DefaultTableModel)jTable1.getModel();
+        jTable1.setDefaultRenderer(Object.class, new CellHighlighterRenderer(sArr));
+        
+    }
+    
     private void radiobutton_Activity_SecondActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radiobutton_Activity_SecondActionPerformed
-        // TODO add your handling code here:
+        if (radiobutton_Activity_Second.isSelected()) 
+            radiobutton_Activity_Second.setFont(newFont);
+        else 
+            radiobutton_Activity_Second.setFont(font);
     }//GEN-LAST:event_radiobutton_Activity_SecondActionPerformed
 
     private void radiobutton_Activity_FirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radiobutton_Activity_FirstActionPerformed
-        // TODO add your handling code here:
+        if (radiobutton_Activity_First.isSelected()) 
+            radiobutton_Activity_First.setFont(newFont);
+        else 
+            radiobutton_Activity_First.setFont(font);
     }//GEN-LAST:event_radiobutton_Activity_FirstActionPerformed
 
     private void radiobutton_Activity_ThirdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radiobutton_Activity_ThirdActionPerformed
-        // TODO add your handling code here:
+        if (radiobutton_Activity_Third.isSelected()) 
+            radiobutton_Activity_Third.setFont(newFont);
+        else 
+            radiobutton_Activity_Third.setFont(font);
     }//GEN-LAST:event_radiobutton_Activity_ThirdActionPerformed
 
     private void radiobutton_Activity_FourthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radiobutton_Activity_FourthActionPerformed
-        // TODO add your handling code here:
+        if (radiobutton_Activity_Fourth.isSelected()) 
+            radiobutton_Activity_Fourth.setFont(newFont);
+        else 
+            radiobutton_Activity_Fourth.setFont(font);
     }//GEN-LAST:event_radiobutton_Activity_FourthActionPerformed
 
-    private void label_AddResidentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_AddResidentMouseClicked
-    this.dispose();
-      addResident_page addResident_page = new addResident_page();         // TODO add your handling code here:
-    }//GEN-LAST:event_label_AddResidentMouseClicked
-
     private void label_BasicTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_BasicTableMouseClicked
-    this.dispose();
-      basicTable_page basicTable_page = new basicTable_page(); // TODO add your handling code here:
+        this.dispose();
+        basicTable_page basicTable_page = new basicTable_page(user); // TODO add your handling code here:
     }//GEN-LAST:event_label_BasicTableMouseClicked
 
-    private void label_AdvTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_AdvTableMouseClicked
-    this.dispose();
-      advTable_page advTable_page = new advTable_page();  // TODO add your handling code here:
-    }//GEN-LAST:event_label_AdvTableMouseClicked
+    private void label_AddResidentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_AddResidentMouseClicked
+        this.dispose();
+        addResident_page addResident_page = new addResident_page(user);         // TODO add your handling code here:
+    }//GEN-LAST:event_label_AddResidentMouseClicked
 
+    private void label_AdvTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_AdvTableMouseClicked
+        this.dispose();
+        advTable_page advTable_page = new advTable_page(user);  // TODO add your handling code here:
+    }//GEN-LAST:event_label_AdvTableMouseClicked
+    
+    class CellHighlighterRenderer extends DefaultTableCellRenderer {
+
+    private static final long serialVersionUID = 1L;
+    String[] a = new String[4];
+    public CellHighlighterRenderer (String[] a) {
+        this.a = a;
+    }
+    
+    int[][] rawr = new int[4][2];
+    
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        Component c = null;
+        int counter = 0;
+            for (String s : a) {
+                for (int rows = 0; rows < model.getRowCount(); rows++) {
+                    for (int columns = 0; columns < model.getRowCount(); columns++) {
+                        String cellValue = String.valueOf(model.getValueAt(row, column));
+                        for (int[] test : rawr) {
+                            if (test[0] == rows && test[1] == columns) {
+                                continue;
+                            }
+                            if (cellValue.equals(s)) {
+                                c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, rows, columns);
+                                rawr[counter][0] = rows;
+                                rawr[counter][1] = columns;
+                                
+                                counter+=1;
+                                
+                                if (counter == 4) {
+                                    return c;
+                                }
+                                c.setBackground(Color.pink);
+                            }
+                            else {
+                                c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, rows, columns);
+                                c.setBackground(table.getBackground()); 
+                            }
+                        }
+                    }
+                }
+            }
+            return c;
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane_monthView;
