@@ -5,25 +5,13 @@
 package com.mycompany.insight_flatlaf_revamp;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
-import com.password4j.Hash;
-import com.password4j.Password;
-import com.password4j.SecureString;
-import java.security.MessageDigest;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import javax.swing.JOptionPane;
-import org.mindrot.jbcrypt.BCrypt;
 
 /**
  *
  * @author Dhan Michea
  */
 public class login_page extends javax.swing.JFrame {
-    private boolean successfulConn = false;
-    private int clearanceLvl;
-    
-    
+
     /**
      * Creates new form login_page
      */
@@ -187,109 +175,22 @@ public class login_page extends javax.swing.JFrame {
     }//GEN-LAST:event_jpassword_PasswordActionPerformed
 
     private void jradiobtn_ShowPassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jradiobtn_ShowPassActionPerformed
-        if (jradiobtn_ShowPass.isSelected())
-            jpassword_Password.setEchoChar((char)0);
-        else
-            jpassword_Password.setEchoChar('*');
+        // TODO add your handling code here:
     }//GEN-LAST:event_jradiobtn_ShowPassActionPerformed
 
     private void jbutton_LoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbutton_LoginMouseClicked
-        
+        this.dispose();
+        home_page home_page = new home_page(); // TODO add your handling code here:
     }//GEN-LAST:event_jbutton_LoginMouseClicked
 
     private void jbutton_LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbutton_LoginActionPerformed
-        try {
-            String username = textField_Username.getText();
-            char[] pwd = jpassword_Password.getPassword();
-            
-            SecureString secure = new SecureString(pwd);
-     
-            DBManager manager = new DBManager();
-            
-            String sqlFetch = "SELECT * FROM `brgy. credentials` WHERE username=?";
-            
-            Connection conn = manager.connect();
-            PreparedStatement ps = conn.prepareStatement(sqlFetch);
-            ps.setString(1, username);
-            int clearanceLvl = 0;
-            ResultSet rs =  ps.executeQuery();
-            while (rs.next()) {
-                String username1 = rs.getString("username");
-                System.out.println(username1);
-                if (username.equals(username1)) {
-                    String password = rs.getString("password");
-                    String salt = rs.getString("salt");
-                    
-                    String newPword = salt + passwordHash(secure);
-                    boolean checker = false;
-                    if (password.equals(newPword)) {
-                        checker = true;
-                    }
-                    secure.clear();
-                    if (checker) {
-                        clearanceLvl = rs.getInt("clearance_lvl");
-                        successfulConn = true;
-                        break;
-                    }
-                    else {
-                        System.out.println("WRONGPASSWORD");
-                        break;
-                    }
-                }
-            }
-            if (successfulConn) {
-                manager.setUsername("root"); // REWORK!!! implement a way to make specific perms
-                manager.setPassword("5wLCmVS9Q2Z4tvVp");
-                manager.setClearanceLvl(clearanceLvl);
-                this.dispose();
-                new home_page(manager);
-            }
-        } 
-        catch (Exception err) {
-            JOptionPane.showMessageDialog(null, err);
-        }
+                // TODO add your handling code here:
     }//GEN-LAST:event_jbutton_LoginActionPerformed
 
     private void textField_UsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textField_UsernameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_textField_UsernameActionPerformed
-    
-    // Method for checking if the password is correct
-//    private static boolean isPasswordCorrect(String dbPass, char[] passFieldPass) {
-//        char[] correctPassword = dbPass.toCharArray();
-//        
-//    }
-    
-    private static String passwordHash(SecureString password) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA");
-            md.update(password.toString().getBytes());
-            byte[] newByte = md.digest();
-            
-            StringBuilder sb = new StringBuilder();
-            
-            for (byte b : newByte) {
-                sb.append(String.format("%02x", b));
-            }
-            
-            return sb.toString();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
-        return null;
-    }
-//    private void test(){
-//        String password = "test";
-//        String candidate = "test";
-//        String salt = BCrypt.gensalt();
-//	String hashed = BCrypt.hashpw(password, salt);
-//        
-//	if (BCrypt.checkpw(candidate, hashed))
-//		System.out.println("It matches");
-//	else
-//		System.out.println("It does not match");
-//        
-//    }
+
     /**
      * @param args the command line arguments
      */
@@ -318,6 +219,7 @@ public class login_page extends javax.swing.JFrame {
         //</editor-fold>
 
         FlatMacDarkLaf.setup();
+        
         
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

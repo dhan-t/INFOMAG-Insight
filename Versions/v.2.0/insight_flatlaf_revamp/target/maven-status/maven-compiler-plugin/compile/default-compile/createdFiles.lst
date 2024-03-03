@@ -6,7 +6,6 @@ com\mycompany\insight_flatlaf_revamp\basicTable_page$4.class
 com\mycompany\insight_flatlaf_revamp\editResident_page$9.class
 com\mycompany\insight_flatlaf_revamp\editResident_page$14.class
 com\mycompany\insight_flatlaf_revamp\home_page$4.class
-com\mycompany\insight_flatlaf_revamp\TextAttribute.class
 com\mycompany\insight_flatlaf_revamp\advTable_page$6.class
 colorSchemes\colorCodes.class
 com\mycompany\insight_flatlaf_revamp\addResident_page$3.class
@@ -22,7 +21,6 @@ com\mycompany\insight_flatlaf_revamp\basicTable_page$5.class
 com\mycompany\insight_flatlaf_revamp\addResident_page$14.class
 com\mycompany\insight_flatlaf_revamp\editResident_page$7.class
 com\mycompany\insight_flatlaf_revamp\home_page$5.class
-com\mycompany\insight_flatlaf_revamp\home_page$CellHighlighterRenderer.class
 com\mycompany\insight_flatlaf_revamp\addResident_page.class
 com\mycompany\insight_flatlaf_revamp\editResident_page$15.class
 com\mycompany\insight_flatlaf_revamp\login_page$6.class
@@ -31,7 +29,6 @@ com\mycompany\insight_flatlaf_revamp\editResident_page.class
 com\mycompany\insight_flatlaf_revamp\editResident_page$4.class
 com\mycompany\insight_flatlaf_revamp\addResident_page$2.class
 com\mycompany\insight_flatlaf_revamp\basicTable_page$2.class
-com\mycompany\insight_flatlaf_revamp\DBManager.class
 com\mycompany\insight_flatlaf_revamp\home_page$2.class
 com\mycompany\insight_flatlaf_revamp\addResident_page$16.class
 com\mycompany\insight_flatlaf_revamp\editResident_page$12.class
@@ -39,6 +36,7 @@ com\mycompany\insight_flatlaf_revamp\login_page$5.class
 com\mycompany\insight_flatlaf_revamp\addResident_page$9.class
 com\mycompany\insight_flatlaf_revamp\advTable_page$7.class
 com\mycompany\insight_flatlaf_revamp\addResident_page$5.class
+com\mycompany\insight_flatlaf_revamp\Insight_flatlaf_revamp.class
 com\mycompany\insight_flatlaf_revamp\advTable_page$4.class
 com\mycompany\insight_flatlaf_revamp\editResident_page$8.class
 com\mycompany\insight_flatlaf_revamp\basicTable_page$6.class
@@ -61,7 +59,6 @@ com\mycompany\insight_flatlaf_revamp\editResident_page$13.class
 com\mycompany\insight_flatlaf_revamp\addResident_page$4.class
 com\mycompany\insight_flatlaf_revamp\login_page.class
 com\mycompany\insight_flatlaf_revamp\login_page$1.class
-com\mycompany\insight_flatlaf_revamp\basicTable_page$7.class
 com\mycompany\insight_flatlaf_revamp\addResident_page$12.class
 com\mycompany\insight_flatlaf_revamp\addResident_page$7.class
 com\mycompany\insight_flatlaf_revamp\editResident_page$2.class

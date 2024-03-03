@@ -9,12 +9,11 @@ package com.mycompany.insight_flatlaf_revamp;
  * @author Dhan Michea
  */
 public class advTable_page extends javax.swing.JFrame {
-    private final DBManager user;
+
     /**
      * Creates new form home_page
      */
-    public advTable_page(DBManager user) {
-        this.user = user;
+    public advTable_page() {
         initComponents();
         
         this.setVisible(true);
@@ -300,22 +299,23 @@ public class advTable_page extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void label_HomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_HomeMouseClicked
-
+        this.dispose();
+        home_page home_page = new home_page();         // TODO add your handling code here:
     }//GEN-LAST:event_label_HomeMouseClicked
 
     private void label_AddResidentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_AddResidentMouseClicked
     this.dispose();
-      addResident_page addResident_page = new addResident_page(user);         // TODO add your handling code here:
+      addResident_page addResident_page = new addResident_page();         // TODO add your handling code here:
     }//GEN-LAST:event_label_AddResidentMouseClicked
 
     private void label_BasicTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_BasicTableMouseClicked
     this.dispose();
-      basicTable_page basicTable_page = new basicTable_page(user);       // TODO add your handling code here:
+      basicTable_page basicTable_page = new basicTable_page();       // TODO add your handling code here:
     }//GEN-LAST:event_label_BasicTableMouseClicked
 
     private void label_AdvTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_AdvTableMouseClicked
     this.dispose();
-      advTable_page advTable_page = new advTable_page(user);        // TODO add your handling code here:
+      advTable_page advTable_page = new advTable_page();        // TODO add your handling code here:
     }//GEN-LAST:event_label_AdvTableMouseClicked
 
     private void button_EditResActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_EditResActionPerformed
@@ -324,7 +324,7 @@ public class advTable_page extends javax.swing.JFrame {
 
     private void button_EditResMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_EditResMouseClicked
     this.dispose();
-      editResident_page editResident_page = new editResident_page(user);          // TODO add your handling code here:
+      editResident_page editResident_page = new editResident_page();          // TODO add your handling code here:
     }//GEN-LAST:event_button_EditResMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
