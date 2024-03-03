@@ -1,0 +1,48 @@
+Created March 02, 2024.
+
+V.2.0 IS HERE!
+
+Difference from V.1.0:
+  - UI Overhaul. Now inspired by websites
+  - Color scheme change
+  - Utilization of FlatLaf plugin for Netbeans
+
+Pre-Requisites:
+  - Will only work with Netbeans IDE
+  - Check out FlatLaf documentation for tutorials: https://www.formdev.com/flatlaf/
+
+Needs improvement:
+  - Sidebar icons
+  - Smooth UI flow
+  - Implementation of front end features
+
+
+
+>>> FROM V.1.0 DOCUMENTATION:
+Basic foundation of the program Insight for Sangguniang Kabataan residents of a barangay. 
+Those features are:
+
+Login page:
+  Should redirect users to Admin or Basic view depending on their clearance level.
+
+AdminView_Basic:
+  Shows the basic table with lesser details compared to advanced view
+
+AdminView_Advanced:
+  Shows more details of the table when toggled on.
+
+BasicView:
+  Is the same with admin view but without the register, update, and remove user features. View only mode.
+
+Registration:
+  Allows users to register and add their information to the table.
+
+Edit Information:
+  Allows user to update existing information.
+
+# To be updated features:
+- Better UI design
+- Integration of SQL
+- Connection of pages
+- Error handling
+
