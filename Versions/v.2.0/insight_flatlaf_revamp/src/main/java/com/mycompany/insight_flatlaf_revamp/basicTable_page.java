@@ -4,18 +4,26 @@
  */
 package com.mycompany.insight_flatlaf_revamp;
 
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Dhan Michea
  */
 public class basicTable_page extends javax.swing.JFrame {
-
+    private final DBManager user;
+    private boolean isBasic = true;
+    private JTable table_AdvTable = null;
     /**
      * Creates new form home_page
      */
-    public basicTable_page() {
+    public basicTable_page(DBManager user) {
+        this.user = user;
         initComponents();
-        
+        myInitComponents();
         this.setVisible(true);
     }
 
@@ -251,6 +259,11 @@ public class basicTable_page extends javax.swing.JFrame {
         button_RemoveRes.setMaximumSize(new java.awt.Dimension(180, 35));
         button_RemoveRes.setMinimumSize(new java.awt.Dimension(180, 35));
         button_RemoveRes.setPreferredSize(new java.awt.Dimension(180, 35));
+        button_RemoveRes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button_RemoveResActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -258,19 +271,17 @@ public class basicTable_page extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panel_sidePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
                         .addComponent(panel_BrgyName, javax.swing.GroupLayout.PREFERRED_SIZE, 603, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12)
                         .addComponent(button_EditRes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(15, 15, 15)
                         .addComponent(button_RemoveRes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(35, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(scrollpane_MainScroll)
-                        .addContainerGap())))
+                        .addGap(0, 29, Short.MAX_VALUE))
+                    .addComponent(scrollpane_MainScroll))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -291,31 +302,161 @@ public class basicTable_page extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    private void myInitComponents() {
+        if (user.getClearanceLvl() == 1) {
+            button_EditRes.setVisible(false);
+            button_RemoveRes.setVisible(false);
+        }
+        
+        // adding the Advanced table
+        table_AdvTable = new javax.swing.JTable();
+        table_AdvTable.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        table_AdvTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "", "ID", "Full Name", "Birthday", "Youth Class", "Employment", "SK Voter", "National Voter", "Education Level"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false, false, false, false, false, false
+            };
 
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        table_AdvTable.setRowHeight(35);
+        table_AdvTable.setShowGrid(true);
+        table_AdvTable.getTableHeader().setResizingAllowed(false);
+        table_AdvTable.getTableHeader().setReorderingAllowed(false);
+//        scrollpane_MainScroll.setViewportView(table_AdvTable);
+        if (table_AdvTable.getColumnModel().getColumnCount() > 0) {
+            table_AdvTable.getColumnModel().getColumn(0).setResizable(false);
+            table_AdvTable.getColumnModel().getColumn(0).setPreferredWidth(30);
+            table_AdvTable.getColumnModel().getColumn(1).setResizable(false);
+            table_AdvTable.getColumnModel().getColumn(1).setPreferredWidth(150);
+            table_AdvTable.getColumnModel().getColumn(2).setResizable(false);
+            table_AdvTable.getColumnModel().getColumn(2).setPreferredWidth(250);
+            table_AdvTable.getColumnModel().getColumn(3).setResizable(false);
+            table_AdvTable.getColumnModel().getColumn(3).setPreferredWidth(100);
+            table_AdvTable.getColumnModel().getColumn(4).setResizable(false);
+            table_AdvTable.getColumnModel().getColumn(4).setPreferredWidth(80);
+            table_AdvTable.getColumnModel().getColumn(5).setResizable(false);
+            table_AdvTable.getColumnModel().getColumn(5).setPreferredWidth(80);
+            table_AdvTable.getColumnModel().getColumn(6).setResizable(false);
+            table_AdvTable.getColumnModel().getColumn(6).setPreferredWidth(80);
+            table_AdvTable.getColumnModel().getColumn(7).setResizable(false);
+            table_AdvTable.getColumnModel().getColumn(7).setPreferredWidth(90);
+            table_AdvTable.getColumnModel().getColumn(8).setResizable(false);
+            table_AdvTable.getColumnModel().getColumn(8).setPreferredWidth(90);
+        }
+        table_AdvTable.setVisible(false);
+    }
+    
     private void label_HomeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_HomeMouseClicked
-        this.dispose();
-        home_page home_page = new home_page();         // TODO add your handling code here:
+        
     }//GEN-LAST:event_label_HomeMouseClicked
 
     private void label_AddResidentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_AddResidentMouseClicked
      this.dispose();
-      addResident_page addResident_page = new addResident_page();        // TODO add your handling code here:
+      addResident_page addResident_page = new addResident_page(user);        // TODO add your handling code here:
     }//GEN-LAST:event_label_AddResidentMouseClicked
 
     private void label_AdvTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_AdvTableMouseClicked
     this.dispose();
-      advTable_page advTable_page = new advTable_page();        // TODO add your handling code here:
+      advTable_page advTable_page = new advTable_page(user);        // TODO add your handling code here:
     }//GEN-LAST:event_label_AdvTableMouseClicked
 
     private void button_EditResMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_EditResMouseClicked
     this.dispose();
-      editResident_page editResident_page = new editResident_page();       // TODO add your handling code here:
+      editResident_page editResident_page = new editResident_page(user);       // TODO add your handling code here:
     }//GEN-LAST:event_button_EditResMouseClicked
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_formMouseClicked
 
+    private void button_RemoveResActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_RemoveResActionPerformed
+        ArrayList<String> idsToRemove = new ArrayList<String>();
+        if (isBasic) {
+            DefaultTableModel tblModel = (DefaultTableModel)table_BasicTable.getModel();
+            for (int row = 0; row < tblModel.getRowCount(); row++) {
+                if ((boolean)tblModel.getValueAt(row, 0)) {
+                    Object checker =  table_BasicTable.getValueAt(row, 1);
+                    
+                    if (checker == null) {
+                        JOptionPane.showMessageDialog(rootPane, "Please select a valid row to delete");
+                        return;
+                    }
+                    idsToRemove.add((String)checker);
+                }
+            }
+        }
+        else {
+            DefaultTableModel adTblModel = (DefaultTableModel)table_AdvTable.getModel();
+            for (int row = 0; row < adTblModel.getRowCount(); row++) {
+                    Object checker =  table_AdvTable.getValueAt(row, 1);
+                    
+                    if (checker == null) {
+                        JOptionPane.showMessageDialog(rootPane, "Please select a valid row to delete");
+                        return;
+                    }
+                    idsToRemove.add((String)checker);
+            }  
+        }
+        
+        if (idsToRemove.isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Please select row to delete");
+        }
+        else {
+            for (int i = 0; i < idsToRemove.size(); i++) {
+                String idToRemove = idsToRemove.get(i);
+                System.out.println(idToRemove);
+            }
+            idsToRemove.clear();
+        }
+        
+    }//GEN-LAST:event_button_RemoveResActionPerformed
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button_EditRes;
     private javax.swing.JButton button_RemoveRes;
