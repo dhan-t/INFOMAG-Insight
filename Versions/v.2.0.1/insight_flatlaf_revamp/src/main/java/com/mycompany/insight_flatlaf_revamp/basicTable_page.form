@@ -120,11 +120,13 @@
               <Component id="label_Insight" alignment="1" max="32767" attributes="0"/>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace pref="78" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="label_BasicTable" alignment="1" max="32767" attributes="0"/>
-                      <Component id="label_AddResident" alignment="1" max="32767" attributes="0"/>
-                      <Component id="label_Home" alignment="1" max="32767" attributes="0"/>
-                      <Component id="label_AdvTable" pref="150" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="label_AddResident" min="-2" pref="150" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="label_BasicTable" alignment="1" max="32767" attributes="0"/>
+                          <Component id="label_Home" alignment="1" max="32767" attributes="0"/>
+                          <Component id="label_AdvTable" pref="150" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
@@ -138,11 +140,11 @@
                   <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                   <Component id="label_Home" min="-2" pref="35" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                  <Component id="label_AddResident" min="-2" pref="35" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                   <Component id="label_BasicTable" min="-2" pref="35" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                   <Component id="label_AdvTable" min="-2" pref="35" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                  <Component id="label_AddResident" min="-2" pref="35" max="-2" attributes="0"/>
                   <EmptySpace min="0" pref="365" max="32767" attributes="0"/>
               </Group>
           </Group>
