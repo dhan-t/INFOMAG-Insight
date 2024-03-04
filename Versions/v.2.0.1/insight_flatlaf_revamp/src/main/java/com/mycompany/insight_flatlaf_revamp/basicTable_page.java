@@ -484,8 +484,54 @@ public class basicTable_page extends javax.swing.JFrame {
     }//GEN-LAST:event_label_AdvTableMouseClicked
 
     private void button_EditResMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button_EditResMouseClicked
-    this.dispose();
-    new editResident_page(user);
+    
+        if (isBasic) {
+            int indexToChange = table_BasicTable.getSelectedRow();
+            Object checker = table_BasicTable.getValueAt(indexToChange, 1);
+
+            if (indexToChange < 0) {
+                JOptionPane.showMessageDialog(rootPane, "Please select row to edit");
+            } else if (checker == null) {
+                JOptionPane.showMessageDialog(rootPane, "Please select a valid row to edit");
+            } else {
+                try {
+                    String sqlFetch = "SELECT * FROM `resident` INNER JOIN address ON resident.Address_ID=address.Address_ID INNER JOIN "
+                            + "demographic ON resident.Demo_ID=demographic.Demo_ID WHERE res_id=?";
+                    Connection conn = user.connect();
+                    PreparedStatement ps = conn.prepareStatement(sqlFetch);
+                    ps.setString(1, checker.toString());
+                    ResultSet rs = ps.executeQuery();
+
+                    this.dispose();
+                    new editResident_page(rs, user);
+                } catch (Exception err) {
+                    JOptionPane.showMessageDialog(rootPane, err);
+                }
+            }
+        } else {
+            int indexToChange = table_AdvTable.getSelectedRow();
+            Object checker = table_AdvTable.getValueAt(indexToChange, 0);
+
+            if (indexToChange < 0) {
+                JOptionPane.showMessageDialog(rootPane, "Please select row to edit");
+            } else if (checker == null) {
+                JOptionPane.showMessageDialog(rootPane, "Please select a valid row to edit");
+            } else {
+                try {
+                    String sqlFetch = "SELECT * FROM `resident` INNER JOIN address ON resident.Address_ID=address.Address_ID INNER JOIN "
+                            + "demographic ON resident.Demo_ID=demographic.Demo_ID WHERE res_id=?";
+                    Connection conn = user.connect();
+                    PreparedStatement ps = conn.prepareStatement(sqlFetch);
+                    ps.setString(1, checker.toString());
+                    ResultSet rs = ps.executeQuery();
+
+                    this.dispose();
+                    new editResident_page(rs, user);
+                } catch (Exception err) {
+                    JOptionPane.showMessageDialog(rootPane, err);
+                }
+            }
+        }
     }//GEN-LAST:event_button_EditResMouseClicked
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
@@ -494,9 +540,14 @@ public class basicTable_page extends javax.swing.JFrame {
 
     private void button_RemoveResActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_RemoveResActionPerformed
         ArrayList<String> idsToRemove = new ArrayList<String>();
+        ArrayList<Integer> rowToRemove = new ArrayList<Integer>();
+        DefaultTableModel tblModel = (DefaultTableModel)table_BasicTable.getModel();
+        DefaultTableModel adTblModel = (DefaultTableModel)table_AdvTable.getModel();
         if (isBasic) {
-            DefaultTableModel tblModel = (DefaultTableModel)table_BasicTable.getModel();
             for (int row = 0; row < tblModel.getRowCount(); row++) {
+                if (tblModel.getValueAt(row, 0) == null) {
+                    break;
+                }
                 if ((boolean)tblModel.getValueAt(row, 0)) {
                     System.out.println("remove basic");
                     Object checker =  table_BasicTable.getValueAt(row, 1);
@@ -506,20 +557,26 @@ public class basicTable_page extends javax.swing.JFrame {
                         return;
                     }
                     idsToRemove.add((String)checker);
+                    rowToRemove.add(row);
                 }
             }
         }
         else {
-            DefaultTableModel adTblModel = (DefaultTableModel)table_AdvTable.getModel();
             for (int row = 0; row < adTblModel.getRowCount(); row++) {
-                System.out.println("remove advanced");
-                Object checker =  table_AdvTable.getValueAt(row, 1);
-
-                if (checker == null) {
-                    JOptionPane.showMessageDialog(rootPane, "Please select a valid row to delete");
-                    return;
+                if (adTblModel.getValueAt(row, 0) == null) {
+                    break;
                 }
-                idsToRemove.add((String)checker);
+                if ((boolean)adTblModel.getValueAt(row, 0)) {
+                    System.out.println("remove advanced");
+                    Object checker =  table_AdvTable.getValueAt(row, 1);
+
+                    if (checker == null) {
+                        JOptionPane.showMessageDialog(rootPane, "Please select a valid row to delete");
+                        return;
+                    }
+                    idsToRemove.add((String)checker);
+                    rowToRemove.add(row);
+                }
             }  
         }
         
@@ -528,8 +585,20 @@ public class basicTable_page extends javax.swing.JFrame {
         }
         else {
             for (int i = 0; i < idsToRemove.size(); i++) {
+                try {
                 String idToRemove = idsToRemove.get(i);
-                System.out.println(idToRemove);
+                String sqlDelete = "DELETE FROM `resident` WHERE Res_ID=?";
+                Connection conn = user.connect();
+                PreparedStatement ps = conn.prepareStatement(sqlDelete);
+                ps.setString(1, idToRemove);
+                ps.execute();
+                tblModel.removeRow(rowToRemove.get(i));
+                adTblModel.removeRow(rowToRemove.get(i));
+                
+                JOptionPane.showMessageDialog(rootPane, idToRemove + " Successfully deleted");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(rootPane, e);
+                }
             }
             idsToRemove.clear();
         }
@@ -586,17 +655,18 @@ public class basicTable_page extends javax.swing.JFrame {
                 String initial = rs.getString("middle_initial");
                 String sex = rs.getString("sex");
                 String number = rs.getString("contact_num");
-                String address = rs.getString("region") + " " + rs.getString("municipality") + " " + rs.getString("barangay");
+                String address = rs.getString("zone") + " " + rs.getString("house_num") + " " + rs.getString("district");
 
                 String birthDate = rs.getString("birthdate");
                 String youthClass = rs.getString("Youth_Class");
                 String employed = rs.getString("work_stat");
                 String skVoter = rs.getString("reg_SKVoter");
                 String natVoter = rs.getString("reg_natVoter");
+                String educLvl = rs.getString("educ_background");
 
 
                 Object tblData[] = {false, iD, surname, firstName, initial, sex, number, address};
-                Object adtblData[] = {false, iD, surname + ", " + firstName + " " + initial, birthDate, youthClass, employed, skVoter, natVoter, address};
+                Object adtblData[] = {false, iD, surname + ", " + firstName + " " + initial, birthDate, youthClass, employed, skVoter, natVoter, educLvl};
                 System.out.println("test");
 
                 tblModel.insertRow(rowCounter, tblData);

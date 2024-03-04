@@ -615,7 +615,7 @@ import javax.swing.table.TableColumn;
 
     private void label_AdvTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_AdvTableMouseClicked
         this.dispose();
-        advTable_page advTable_page = new advTable_page(user);  // TODO add your handling code here:
+        new basicTable_page(user);  // TODO add your handling code here:
     }//GEN-LAST:event_label_AdvTableMouseClicked
     
     class CellHighlighterRenderer extends DefaultTableCellRenderer {
