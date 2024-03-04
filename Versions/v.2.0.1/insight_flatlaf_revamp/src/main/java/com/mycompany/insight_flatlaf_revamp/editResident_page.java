@@ -1168,7 +1168,8 @@ public class editResident_page extends javax.swing.JFrame {
     }//GEN-LAST:event_textfield_ZoneFocusLost
 
     private void button_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_CancelActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
+        new home_page(user);
     }//GEN-LAST:event_button_CancelActionPerformed
 
     private void radiobutton_NO_SKvoterFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_radiobutton_NO_SKvoterFocusLost

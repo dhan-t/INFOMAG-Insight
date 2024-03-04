@@ -890,7 +890,8 @@ public class addResident_page extends javax.swing.JFrame {
     }//GEN-LAST:event_label_HomeMouseClicked
 
     private void button_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button_CancelActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
+        new home_page(user);
     }//GEN-LAST:event_button_CancelActionPerformed
 
     private void label_BasicTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_label_BasicTableMouseClicked
