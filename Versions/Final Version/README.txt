@@ -8,7 +8,7 @@ a. Flatlaf (8.3.0) - Used to change the look of Java Swing components
 b. MySQLConnector (3.4) - Used to connect the program to the localhost database
 c. JBCrypt (0.4) - Used to add extra layer of hash or protection to the password
 d. Password4j (1.7.3) - Used to add extra password management capabilities
-e. SLF4J (2.0.7) - Used for proper utilization of logging features
+e. SLF4J (2.0.7) - Required dependency of Password4j
 f. iyouth-1 - The database to be imported into XAMPP. (It has the legacy name of our program)
 
 *All files are in the "Imports" folder and can be imported from there.
