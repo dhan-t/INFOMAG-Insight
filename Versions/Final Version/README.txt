@@ -1,9 +1,14 @@
-HOW TO RUN:
-*Software requirements
+Insight - An SK Profiling System Program.
+
+A profiling system focused on the youth while also being managed by youth leaders. A program to replace the traditional way of profiling: pen and paper then transported to a spreadsheet.
+We used Java and SQL to combine the process and make it more seamless for those in charge. It features the CRUD requirement, Create, Update, and Delete. Being able to register  residents, update their information, and delete them should be needed.
+
+HOW TO RUN
+* Software requirements:
 a. Netbeans IDE (v21) - For code launching
 b. XAMPP (v 3.2.2) - For database connection
 
-*Imports
+* Libraries (Located in the "Imports" folder):
 a. Flatlaf (8.3.0) - Used to change the look of Java Swing components
 b. MySQLConnector (3.4) - Used to connect the program to the localhost database
 c. JBCrypt (0.4) - Used to add extra layer of hash or protection to the password
@@ -11,22 +16,17 @@ d. Password4j (1.7.3) - Used to add extra password management capabilities
 e. SLF4J (2.0.7) - Required dependency of Password4j
 f. iyouth-1 - The database to be imported into XAMPP. (It has the legacy name of our program)
 
-*All files are in the "Imports" folder and can be imported from there.
-
-*How to import JAR files to project:
-https://www.youtube.com/watch?v=OQOpYHwA1A0
+For instructions on importing JAR files to your project, refer to: https://www.youtube.com/watch?v=OQOpYHwA1A0
 
 IMPORTANT
-	This is the exact copy that we presented with. This is not the final project version nor design. Features and look may change overtime as we pickup the project to remake once again. Listed below are feature we feel may be lacking at the current version or may need improvement:
+This is not the final version of the project. We are actively working to improve the design, user interface, and overall functionality. Future development will focus on:
 
 - Consistent design language
-- Small UI details
-- Show/hide names in the table
-- Proper error messages
-- Security of database
-- Better distribution for version handling
+- Enhanced UI features (show/hide table names, etc.)
+- Improved error handling
+- Increased database security
 
-PARTICIPANTS:
+MEMBERS
 Espaldon, Robbie 		- Project Leader
 Basilio, Angelo     		- Researcher
 Fat, Andrew         		- System Analyst
@@ -36,7 +36,9 @@ Tamparong, Dhan		- Designer
 Project duration: 	2nd Term of Sophomore year
 				(February 2024 - March 2024)
 
+We appreciate your interest in this project!
 
+GW™
 =============================================================================
 PREVIOUS DOCUMENTATION (IGNORE)
 
